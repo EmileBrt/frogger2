@@ -1,7 +1,6 @@
 package util;
 
-
-import java.lang.reflect.Array;
+import javafx.scene.shape.Rectangle;
 import java.util.ArrayList;
 
 /**
@@ -15,7 +14,7 @@ public class Lane {
     private int density;
     private Direction direction;
     private int length;
-    private ArrayList<Case> cases;
+    public ArrayList<Rectangle> cars;
 
     /**
      * Constructeur de la classe Lane.
@@ -30,7 +29,6 @@ public class Lane {
         this.density = density;
         this.setDirection(direction);
         this.length = length;
-        this.cases = this.init_cases();
 
     }
 
@@ -94,57 +92,21 @@ public class Lane {
     }
 
     /**
-     * Retourne la liste des cases de la voie.
-     * @return cases
+     * Vérifier que la grenouille n'est pas entrée en collision sur cette voie
+     * @param  frog
+     * @throws boolean true si collision sinon false
      * @since 1.0
      */
-    public ArrayList<Case> getCases() {
-        return cases;
-    }
-
-    /**
-     * Methode de creation de la liste des cases pour la voie.
-     * @since 1.0
-     */
-    public ArrayList<Case> init_cases(){
-        ArrayList<Case> cases = new ArrayList<>();
-        for(int i = 0; i < this.length; i++){
-            Case new_case = new Case();
-            cases.add(new_case);
-
+    public boolean intersect(Rectangle frog){
+        boolean collision = false;
+        for(int i=0 ; i< this.cars.size(); i++){
+            if (this.cars.get(i).intersects(frog.getX(),frog.getY(),frog.getWidth(),frog.getHeight()) == true){
+                collision = true;
+            }
         }
-        return cases;
+        return collision;
     }
 
-    @Override
-    public String toString() {
-        String s = "";
-        for(int i = 0; i < this.length; i++){
-            s += this.cases.get(i).toString();
-        }
 
-        switch(this.direction){
-            case left:
-                s = "<-" + s;
-                break;
-            case right:
-                s += "->";
-        }
-        return s;
-    }
 
-    /**
-     * Methode d'execution des tests de la classe Lane.
-     * @param args args
-     * @since 1.0
-     */
-    public static void main(String[] args) {
-        int length = 10;
-        int speed = 2;
-        int density = 5;
-
-        Lane lane = new Lane(speed, density, Direction.left, length);
-        System.out.println(lane.getCases());
-        System.out.println(lane);
-    }
 }

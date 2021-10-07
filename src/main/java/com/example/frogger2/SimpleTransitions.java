@@ -26,46 +26,58 @@ public class SimpleTransitions extends Application {
         //Creating a scene object
         Scene scene = new Scene(root, 600, 300);
         scene.setFill(Color.WHITE);
-        // Drawing a rectangle
+
+        // Creating the frog
         Rectangle rec = new Rectangle(50.0d, 50.0d, 50.0d, 50.0d);
-        //Color by name
         Image img = new Image("file:src/main/java/image/frogg.png");
         ImagePattern image_pattern = new ImagePattern(img);
         rec.setFill(image_pattern);
 
+        // Creating a car
+        Rectangle car = new Rectangle(200.0d, 200.0d, 150.0d, 50.0d);
+        Image img2 = new Image("file:src/main/java/image/voiture.jpg");
+        ImagePattern image_pattern2 = new ImagePattern(img2);
+        car.setFill(image_pattern2);
+
+        // Moving the frog
         EventHandler<KeyEvent> keyListener = new EventHandler<>() {
             @Override
             public void handle(KeyEvent e) {
                 switch (e.getCode()){
                     case LEFT :
                         System.out.println("LEFT");
-                        rec.setX(rec.getX() - 20);
+                        rec.setX(rec.getX() - 50);
                         rec.setRotate(270);
                         break;
                     case RIGHT:
                         System.out.println("RIGHT");
-                        rec.setX(rec.getX() + 20);
+                        rec.setX(rec.getX() + 50);
                         rec.setRotate(90);
                         break;
                     case DOWN:
                         System.out.println("DOWN");
-                        rec.setY(rec.getY() + 20);
+                        rec.setY(rec.getY() + 50);
                         rec.setRotate(180);
                         break;
                     case UP:
                         System.out.println("UP");
-                        rec.setY(rec.getY() - 20);
+                        rec.setY(rec.getY() - 50);
                         rec.setRotate(0);
                         break;
                 }
             }
         };
 
+        // EventHandler afficher une collision entre la voiture et la grenouille
+
+
+
+
+        // Show content
         scene.addEventHandler(KeyEvent.KEY_PRESSED,keyListener);
         root.getChildren().add(rec);
-        //Adding scene to the stage
+        root.getChildren().add(car);
         primaryStage.setScene(scene);
-        //Displaying the contents of the stage
         primaryStage.show();
     }
 }
