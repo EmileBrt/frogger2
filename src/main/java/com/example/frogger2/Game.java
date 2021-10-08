@@ -1,21 +1,26 @@
 package com.example.frogger2;
 
-import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import javafx.util.Duration;
+import util.Road;
 
-public class SimpleTransitions extends Application {
+public class Game extends Application {
+
+    static Rectangle frog = new Rectangle(50.0d, 50.0d, 40.0d, 40.0d);
+    Image frog_img = new Image("file:src/main/java/image/frogg.png");
+    ImagePattern frog_pattern = new ImagePattern(frog_img);
+
+    static Rectangle car = new Rectangle(200.0d, 200.0d, 150.0d, 50.0d);
+    Image car_img = new Image("file:src/main/java/image/voiture.jpg");
+    ImagePattern car_pattern = new ImagePattern(car_img);
 
     public static void main(String[] args) {
         launch(args);
@@ -25,19 +30,16 @@ public class SimpleTransitions extends Application {
         BorderPane root = new BorderPane();
         //Creating a scene object
         Scene scene = new Scene(root, 600, 300);
-        scene.setFill(Color.WHITE);
+        scene.setFill(Color.BLACK);
 
-        // Creating the frog
-        Rectangle rec = new Rectangle(50.0d, 50.0d, 50.0d, 50.0d);
-        Image img = new Image("file:src/main/java/image/frogg.png");
-        ImagePattern image_pattern = new ImagePattern(img);
-        rec.setFill(image_pattern);
+        // Fill frog with car frog
+        frog.setFill(frog_pattern);
 
-        // Creating a car
-        Rectangle car = new Rectangle(200.0d, 200.0d, 150.0d, 50.0d);
-        Image img2 = new Image("file:src/main/java/image/voiture.jpg");
-        ImagePattern image_pattern2 = new ImagePattern(img2);
-        car.setFill(image_pattern2);
+        // Fill car with car image
+        car.setFill(car_pattern);
+
+        // Fill lanes with DARKGREEN
+
 
         // Moving the frog
         EventHandler<KeyEvent> keyListener = new EventHandler<>() {
@@ -46,38 +48,40 @@ public class SimpleTransitions extends Application {
                 switch (e.getCode()){
                     case LEFT :
                         System.out.println("LEFT");
-                        rec.setX(rec.getX() - 50);
-                        rec.setRotate(270);
+                        frog.setX(frog.getX() - 50);
+                        frog.setRotate(270);
                         break;
                     case RIGHT:
                         System.out.println("RIGHT");
-                        rec.setX(rec.getX() + 50);
-                        rec.setRotate(90);
+                        frog.setX(frog.getX() + 50);
+                        frog.setRotate(90);
                         break;
                     case DOWN:
                         System.out.println("DOWN");
-                        rec.setY(rec.getY() + 50);
-                        rec.setRotate(180);
+                        frog.setY(frog.getY() + 50);
+                        frog.setRotate(180);
                         break;
                     case UP:
                         System.out.println("UP");
-                        rec.setY(rec.getY() - 50);
-                        rec.setRotate(0);
+                        frog.setY(frog.getY() - 50);
+                        frog.setRotate(0);
                         break;
+                }
+
+                // Stop Condition
+
+                if (frog.intersects(car.getX(),car.getY(),car.getWidth(),car.getHeight())) {
+                    System.out.println("Stop");
                 }
             }
         };
 
-        // EventHandler afficher une collision entre la voiture et la grenouille
-
-
-
-
         // Show content
         scene.addEventHandler(KeyEvent.KEY_PRESSED,keyListener);
-        root.getChildren().add(rec);
+        root.getChildren().add(frog);
         root.getChildren().add(car);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+
 }

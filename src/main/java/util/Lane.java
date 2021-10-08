@@ -9,13 +9,13 @@ import java.util.ArrayList;
  * @author Corentin GOETGHEBEUR
  * @version 1.0
  */
-public class Lane {
+public class Lane extends Rectangle{
     private int speed;
     private int density;
     private Direction direction;
     private int length;
-    public ArrayList<Rectangle> cars;
-
+    public ArrayList<Rectangle> objects;
+    public int lane_type; // type de voie (0: safe, 1: voie)
     /**
      * Constructeur de la classe Lane.
      * @param speed  Vitesse de circulation des voitures sur cette voie.
@@ -97,10 +97,11 @@ public class Lane {
      * @throws boolean true si collision sinon false
      * @since 1.0
      */
+
     public boolean intersect(Rectangle frog){
         boolean collision = false;
-        for(int i=0 ; i< this.cars.size(); i++){
-            if (this.cars.get(i).intersects(frog.getX(),frog.getY(),frog.getWidth(),frog.getHeight()) == true){
+        for(int i = 0; i< this.objects.size(); i++){
+            if (this.objects.get(i).intersects(frog.getX(),frog.getY(),frog.getWidth(),frog.getHeight()) == true){
                 collision = true;
             }
         }

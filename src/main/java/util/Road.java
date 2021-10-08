@@ -1,5 +1,6 @@
 package util;
 
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
@@ -11,9 +12,9 @@ import java.util.ArrayList;
  * @version 1.0
  */
 public class Road {
-    private int nbLanes;
-    private int length;
-    private ArrayList<Lane> lanes;
+    public int nbLanes = 8;
+    public int length;
+    public ArrayList<Lane> lanes;
 
     public int getNbLanes() {
         return nbLanes;
