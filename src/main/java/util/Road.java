@@ -14,7 +14,13 @@ import java.util.ArrayList;
 public class Road {
     public int nbLanes = 8;
     public int length;
-    public ArrayList<Lane> lanes;
+    public ArrayList<Lane> lanes = new ArrayList<Lane>();
+
+    public Road() {
+        for(int i=0;i<this.nbLanes;i++){
+            lanes.add(new Lane(1,1,Direction.left,300));
+        }
+    }
 
     public int getNbLanes() {
         return nbLanes;
@@ -54,5 +60,4 @@ public class Road {
         }
         return end_collision;
     }
-
 }

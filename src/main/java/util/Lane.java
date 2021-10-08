@@ -29,7 +29,6 @@ public class Lane extends Rectangle{
         this.density = density;
         this.setDirection(direction);
         this.length = length;
-
     }
 
     /**

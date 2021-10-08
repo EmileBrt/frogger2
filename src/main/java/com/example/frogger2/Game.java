@@ -14,6 +14,8 @@ import util.Road;
 
 public class Game extends Application {
 
+    static Road road = new Road();
+
     static Rectangle frog = new Rectangle(50.0d, 50.0d, 40.0d, 40.0d);
     Image frog_img = new Image("file:src/main/java/image/frogg.png");
     ImagePattern frog_pattern = new ImagePattern(frog_img);
@@ -22,9 +24,6 @@ public class Game extends Application {
     Image car_img = new Image("file:src/main/java/image/voiture.jpg");
     ImagePattern car_pattern = new ImagePattern(car_img);
 
-    public static void main(String[] args) {
-        launch(args);
-    }
     @Override
     public void start(Stage primaryStage) {
         BorderPane root = new BorderPane();
@@ -39,7 +38,9 @@ public class Game extends Application {
         car.setFill(car_pattern);
 
         // Fill lanes with DARKGREEN
-
+        for(int i=0;i< road.nbLanes;i++){
+            road.lanes.get(i).setFill(Color.DARKGREEN);
+        }
 
         // Moving the frog
         EventHandler<KeyEvent> keyListener = new EventHandler<>() {
@@ -84,4 +85,7 @@ public class Game extends Application {
         primaryStage.show();
     }
 
+    public static void main(String[] args) {
+        launch(args);
+    }
 }
