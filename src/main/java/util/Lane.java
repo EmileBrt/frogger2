@@ -24,7 +24,8 @@ public class Lane extends Rectangle{
      * @param length longueur de la voie.
      * @since 1.0
      */
-    public Lane(int speed, int density, Direction direction, int length) {
+    public Lane(double x,double y,double weight,double height,int speed, int density, Direction direction, int length) {
+        super(x,y,weight,height);
         this.speed = speed;
         this.density = density;
         this.setDirection(direction);

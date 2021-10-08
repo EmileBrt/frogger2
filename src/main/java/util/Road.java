@@ -18,7 +18,7 @@ public class Road {
 
     public Road() {
         for(int i=0;i<this.nbLanes;i++){
-            lanes.add(new Lane(1,1,Direction.left,300));
+            lanes.add(new Lane(0,i*25,400,20,1,1,Direction.left,300));
         }
     }
 

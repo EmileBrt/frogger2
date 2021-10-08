@@ -79,6 +79,10 @@ public class Game extends Application {
 
         // Show content
         scene.addEventHandler(KeyEvent.KEY_PRESSED,keyListener);
+
+        for(int i=0;i< road.nbLanes;i++){
+            root.getChildren().add(road.lanes.get(i));
+        }
         root.getChildren().add(frog);
         root.getChildren().add(car);
         primaryStage.setScene(scene);
