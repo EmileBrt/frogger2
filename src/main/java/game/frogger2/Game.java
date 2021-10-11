@@ -61,6 +61,7 @@ public class Game extends Application {
         EventHandler<KeyEvent> keyListener = new EventHandler<>() {
             @Override
             public void handle(KeyEvent e) {
+
                 switch (e.getCode()){
                     case Q :
                         System.out.println("LEFT");
@@ -68,6 +69,7 @@ public class Game extends Application {
                         TranslateTransition transition_left = new TranslateTransition(Duration.seconds(0.10),frog);
                         transition_left.setByX(-50);
                         transition_left.play();
+                        System.out.println("x:"+frog.getX()+"y:"+frog.getY());
                         break;
                     case D:
                         System.out.println("RIGHT");
@@ -75,13 +77,15 @@ public class Game extends Application {
                         TranslateTransition transition_right = new TranslateTransition(Duration.seconds(0.10),frog);
                         transition_right.setByX(+50);
                         transition_right.play();
+                        System.out.println("x:"+frog.getX()+"y:"+frog.getY());
                         break;
-                    case S:
+                    case S :
                         System.out.println("DOWN");
                         frog.setRotate(180);
                         TranslateTransition transition_down = new TranslateTransition(Duration.seconds(0.10),frog);
                         transition_down.setByY(+50);
                         transition_down.play();
+                        System.out.println("x:"+frog.getX()+"y:"+frog.getY());
                         break;
                     case Z:
                         System.out.println("UP");
@@ -89,12 +93,16 @@ public class Game extends Application {
                         TranslateTransition transition_up = new TranslateTransition(Duration.seconds(0.10),frog);
                         transition_up.setByY(-50);
                         transition_up.play();
+                        System.out.println("x:"+frog.getX()+"y:"+frog.getY());
                         break;
                 }
                 // update car
-
+                road.update();
                 // To Do Stop Condition
                 // To Do Win Condition To_Do
+                if(frog.getY()>1100){
+                    System.out.println("Tu as gagné");
+                }
             }
         };
 

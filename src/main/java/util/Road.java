@@ -76,9 +76,7 @@ public class Road {
             for(int j=0;j<lanes.get(i).objects.size();j++){
                 if(lanes.get(i).objects.get(j).getX()> 1400){
                     lanes.get(i).objects.remove(j);
-                    if (Math.random() < lanes.get(i).getDensity()) {
-                        lanes.get(i).objects.add(new Rectangle(0,j*50,100,50));
-                    }
+                    lanes.get(i).objects.add(new Rectangle(0,j*50,100,50));
                 }
             }
         }
