@@ -69,4 +69,18 @@ public class Road {
         }
         return end_collision;
     }
+
+    // On retire les voitures qui sont en dehors de l'écran et on en ajouter une nouvelle suivant le densité
+    public void update(){
+        for(int i=0;i<lanes.size();i++){
+            for(int j=0;j<lanes.get(i).objects.size();j++){
+                if(lanes.get(i).objects.get(j).getX()> 1400){
+                    lanes.get(i).objects.remove(j);
+                    if (Math.random() < lanes.get(i).getDensity()) {
+                        lanes.get(i).objects.add(new Rectangle(0,j*50,100,50));
+                    }
+                }
+            }
+        }
+    }
 }

@@ -32,6 +32,7 @@ public class Game extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        //Creating a BroderPane
         BorderPane root = new BorderPane();
         //Creating a scene object
         Scene scene = new Scene(root, 1200, 600);
@@ -46,8 +47,6 @@ public class Game extends Application {
             if(i%2==0){road.lanes.get(i).setFill(road_pattern2);};
             road.lanes.get(0).setFill(Color.DARKGREEN);
             road.lanes.get(11).setFill(Color.DARKGREEN);
-
-
             // Fill Objects in lanes with car_pattern
             for(int j=0;j<road.lanes.get(i).objects.size();j++){road.lanes.get(i).objects.get(j).setFill(car_pattern);
                 TranslateTransition transition = new TranslateTransition(
@@ -92,12 +91,14 @@ public class Game extends Application {
                         transition_up.play();
                         break;
                 }
+                // update car
+
                 // To Do Stop Condition
                 // To Do Win Condition To_Do
             }
         };
 
-        // Show content
+        // keypressed event
         scene.addEventHandler(KeyEvent.KEY_PRESSED,keyListener);
 
         // Add lanes (To_do: and object of lanes to root)
