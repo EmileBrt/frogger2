@@ -1,4 +1,4 @@
-package com.example.frogger2;
+package game.frogger2;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -16,31 +16,32 @@ public class Game extends Application {
 
     static Road road = new Road();
 
-    static Rectangle frog = new Rectangle(50.0d, 50.0d, 40.0d, 40.0d);
+    static Rectangle frog = new Rectangle(550, 555, 40.0d, 40.0d);
     Image frog_img = new Image("file:src/main/java/image/frogg.png");
     ImagePattern frog_pattern = new ImagePattern(frog_img);
 
-    static Rectangle car = new Rectangle(200.0d, 200.0d, 150.0d, 50.0d);
-    Image car_img = new Image("file:src/main/java/image/voiture.jpg");
+    Image car_img = new Image("file:src/main/java/image/redcar2.gif");
     ImagePattern car_pattern = new ImagePattern(car_img);
 
     @Override
     public void start(Stage primaryStage) {
         BorderPane root = new BorderPane();
         //Creating a scene object
-        Scene scene = new Scene(root, 600, 300);
+        Scene scene = new Scene(root, 1200, 600);
         scene.setFill(Color.BLACK);
 
         // Fill frog with car frog
         frog.setFill(frog_pattern);
 
-        // Fill car with car image
-        car.setFill(car_pattern);
-
         // Fill lanes with DARKGREEN
         for(int i=0;i< road.nbLanes;i++){
             road.lanes.get(i).setFill(Color.DARKGREEN);
+            // Fill Objects in lanes with car_pattern
+            for(int j=0;j<road.lanes.get(i).objects.size();j++){road.lanes.get(i).objects.get(j).setFill(car_pattern);}
         }
+
+        //Create Translate Transition
+        //TranslateTransition transition = new TranslateTransition(Duration.seconds(0.50), rec);transition.setByX(20f);
 
         // Moving the frog
         EventHandler<KeyEvent> keyListener = new EventHandler<>() {
@@ -69,26 +70,24 @@ public class Game extends Application {
                         break;
                 }
 
-                // Stop Condition
-
-                if (frog.intersects(car.getX(),car.getY(),car.getWidth(),car.getHeight())) {
-                    System.out.println("Stop");
-                }
+                // To Do Stop Condition
+                // To Do Win Condition To_Do
             }
         };
 
         // Show content
         scene.addEventHandler(KeyEvent.KEY_PRESSED,keyListener);
 
-        for(int i=0;i< road.nbLanes;i++){
+        // Add lanes (To_do: and object of lanes to root)
+        for(int i=0;i< road.lanes.size();i++){
             root.getChildren().add(road.lanes.get(i));
+            for(int j=0;j<road.lanes.get(i).objects.size();j++){root.getChildren().add(road.lanes.get(i).objects.get(j));}
         }
         root.getChildren().add(frog);
-        root.getChildren().add(car);
         primaryStage.setScene(scene);
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
-
     public static void main(String[] args) {
         launch(args);
     }

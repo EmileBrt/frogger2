@@ -10,6 +10,6 @@ module com.example.frogger2 {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
 
-    opens com.example.frogger2 to javafx.fxml;
-    exports com.example.frogger2;
+    opens game.frogger2 to javafx.fxml;
+    exports game.frogger2;
 }
