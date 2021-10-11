@@ -18,6 +18,7 @@ public class Lane extends Rectangle {
     public ArrayList<Rectangle> objects = new ArrayList<Rectangle>();
     public int lane_type; // type de voie (0: safe, 1: voie)
 
+
     public int getLength() {
         return length;
     }

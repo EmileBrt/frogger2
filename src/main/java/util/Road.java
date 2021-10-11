@@ -16,9 +16,18 @@ public class Road {
     public ArrayList<Lane> lanes = new ArrayList<Lane>();
 
     public Road() {
-        for(int i=0;i<this.nbLanes-1;i++){
-            lanes.add(new Lane(0,i*50,1200,49,1,0.25,Direction.left,600,1));
-            }
+        // Set Lane
+        lanes.add(new Lane(0,0*50,1200,49,1,0.25,Direction.left,600,0));
+        lanes.add(new Lane(0,1*50,1200,49,150,0.25,Direction.left,600,1));
+        lanes.add(new Lane(0,2*50,1200,49,250,0.25,Direction.left,600,1));
+        lanes.add(new Lane(0,3*50,1200,49,100,0.25,Direction.left,600,1));
+        lanes.add(new Lane(0,4*50,1200,49,300,0.25,Direction.left,600,1));
+        lanes.add(new Lane(0,5*50,1200,49,150,0.25,Direction.left,600,1));
+        lanes.add(new Lane(0,6*50,1200,49,200,0.25,Direction.left,600,1));
+        lanes.add(new Lane(0,7*50,1200,49,100,0.25,Direction.left,600,1));
+        lanes.add(new Lane(0,8*50,1200,49,150,0.25,Direction.left,600,1));
+        lanes.add(new Lane(0,9*50,1200,49,150,0.25,Direction.left,600,1));
+        lanes.add(new Lane(0,10*50,1200,49,100,0.25,Direction.left,600,1));
         lanes.add(new Lane(0,11*50,1200,49,1,0.25,Direction.left,600,0));
         }
     public int getNbLanes() {

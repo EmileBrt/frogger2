@@ -1,5 +1,5 @@
 package game.frogger2;
-
+import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -10,6 +10,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import util.Road;
 
 public class Game extends Application {
@@ -37,39 +38,49 @@ public class Game extends Application {
         for(int i=0;i< road.nbLanes;i++){
             road.lanes.get(i).setFill(Color.DARKGREEN);
             // Fill Objects in lanes with car_pattern
-            for(int j=0;j<road.lanes.get(i).objects.size();j++){road.lanes.get(i).objects.get(j).setFill(car_pattern);}
+            for(int j=0;j<road.lanes.get(i).objects.size();j++){road.lanes.get(i).objects.get(j).setFill(car_pattern);
+                TranslateTransition transition = new TranslateTransition(
+                        Duration.seconds(2000/road.lanes.get(i).getSpeed()),
+                        road.lanes.get(i).objects.get(j) );
+                transition.setByX(2000f);
+                transition.play();
+            }
         }
-
-        //Create Translate Transition
-        //TranslateTransition transition = new TranslateTransition(Duration.seconds(0.50), rec);transition.setByX(20f);
 
         // Moving the frog
         EventHandler<KeyEvent> keyListener = new EventHandler<>() {
             @Override
             public void handle(KeyEvent e) {
                 switch (e.getCode()){
-                    case LEFT :
+                    case Q :
                         System.out.println("LEFT");
-                        frog.setX(frog.getX() - 50);
                         frog.setRotate(270);
+                        TranslateTransition transition_left = new TranslateTransition(Duration.seconds(0.10),frog);
+                        transition_left.setByX(-50);
+                        transition_left.play();
                         break;
-                    case RIGHT:
+                    case D:
                         System.out.println("RIGHT");
-                        frog.setX(frog.getX() + 50);
                         frog.setRotate(90);
+                        TranslateTransition transition_right = new TranslateTransition(Duration.seconds(0.10),frog);
+                        transition_right.setByX(+50);
+                        transition_right.play();
                         break;
-                    case DOWN:
+                    case S:
                         System.out.println("DOWN");
-                        frog.setY(frog.getY() + 50);
                         frog.setRotate(180);
+                        TranslateTransition transition_down = new TranslateTransition(Duration.seconds(0.10),frog);
+                        transition_down.setByY(+50);
+                        transition_down.play();
                         break;
-                    case UP:
+                    case Z:
                         System.out.println("UP");
-                        frog.setY(frog.getY() - 50);
                         frog.setRotate(0);
+                        TranslateTransition transition_up = new TranslateTransition(Duration.seconds(0.10),frog);
+                        transition_up.setByY(-50);
+                        transition_up.play();
                         break;
                 }
-
                 // To Do Stop Condition
                 // To Do Win Condition To_Do
             }
