@@ -24,6 +24,12 @@ public class Game extends Application {
     Image car_img = new Image("file:src/main/java/image/redcar2.gif");
     ImagePattern car_pattern = new ImagePattern(car_img);
 
+    Image road_img1 = new Image("file:src/main/java/image/road1.png");
+    ImagePattern road_pattern1 = new ImagePattern(road_img1);
+
+    Image road_img2 = new Image("file:src/main/java/image/road2.png");
+    ImagePattern road_pattern2 = new ImagePattern(road_img2);
+
     @Override
     public void start(Stage primaryStage) {
         BorderPane root = new BorderPane();
@@ -36,7 +42,12 @@ public class Game extends Application {
 
         // Fill lanes with DARKGREEN
         for(int i=0;i< road.nbLanes;i++){
-            road.lanes.get(i).setFill(Color.DARKGREEN);
+            if(i%2==1){road.lanes.get(i).setFill(road_pattern1);};
+            if(i%2==0){road.lanes.get(i).setFill(road_pattern2);};
+            road.lanes.get(0).setFill(Color.DARKGREEN);
+            road.lanes.get(11).setFill(Color.DARKGREEN);
+
+
             // Fill Objects in lanes with car_pattern
             for(int j=0;j<road.lanes.get(i).objects.size();j++){road.lanes.get(i).objects.get(j).setFill(car_pattern);
                 TranslateTransition transition = new TranslateTransition(
