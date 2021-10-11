@@ -53,7 +53,6 @@ public class Game extends Application {
                         Duration.seconds(2000/road.lanes.get(i).getSpeed()),
                         road.lanes.get(i).objects.get(j) );
                 transition.setByX(2000f);
-                transition.play();
             }
         }
 
@@ -61,46 +60,50 @@ public class Game extends Application {
         EventHandler<KeyEvent> keyListener = new EventHandler<>() {
             @Override
             public void handle(KeyEvent e) {
-
+                TranslateTransition transition = new TranslateTransition(Duration.seconds(0.10),frog);
                 switch (e.getCode()){
                     case Q :
                         System.out.println("LEFT");
                         frog.setRotate(270);
-                        TranslateTransition transition_left = new TranslateTransition(Duration.seconds(0.10),frog);
-                        transition_left.setByX(-50);
-                        transition_left.play();
-                        System.out.println("x:"+frog.getX()+"y:"+frog.getY());
+                        transition.setByX(-50);
+                        transition.play();
+                        System.out.println("Translatex:"+frog.getTranslateX()+"Translatey:"+frog.getTranslateY());
+                        System.out.println("X:"+(frog.getX()+frog.getTranslateX())+"Y:"+(frog.getY()+frog.getTranslateY()));
                         break;
                     case D:
                         System.out.println("RIGHT");
                         frog.setRotate(90);
-                        TranslateTransition transition_right = new TranslateTransition(Duration.seconds(0.10),frog);
-                        transition_right.setByX(+50);
-                        transition_right.play();
-                        System.out.println("x:"+frog.getX()+"y:"+frog.getY());
+                        transition.setByX(+50);
+                        transition.play();
+                        frog.localToParentTransformProperty();
+                        System.out.println("Translatex:"+frog.getTranslateX()+"Translatey:"+frog.getTranslateY());
+                        System.out.println("X:"+(frog.getX()+frog.getTranslateX())+"Y:"+(frog.getY()+frog.getTranslateY()));
                         break;
                     case S :
                         System.out.println("DOWN");
                         frog.setRotate(180);
-                        TranslateTransition transition_down = new TranslateTransition(Duration.seconds(0.10),frog);
-                        transition_down.setByY(+50);
-                        transition_down.play();
-                        System.out.println("x:"+frog.getX()+"y:"+frog.getY());
+                        transition.setByY(+50);
+                        transition.play();
+                        System.out.println("Translatex:"+frog.getTranslateX()+"Translatey:"+frog.getTranslateY());
+                        System.out.println("X:"+(frog.getX()+frog.getTranslateX())+"Y:"+(frog.getY()+frog.getTranslateY()));
                         break;
                     case Z:
                         System.out.println("UP");
                         frog.setRotate(0);
-                        TranslateTransition transition_up = new TranslateTransition(Duration.seconds(0.10),frog);
-                        transition_up.setByY(-50);
-                        transition_up.play();
-                        System.out.println("x:"+frog.getX()+"y:"+frog.getY());
+                        transition.setByY(-50);
+                        transition.play();
+                        System.out.println("Translatex:"+frog.getTranslateX()+"Translatey:"+frog.getTranslateY());
+                        System.out.println("X:"+(frog.getX()+frog.getTranslateX())+"Y:"+(frog.getY()+frog.getTranslateY()));
                         break;
                 }
                 // update car
                 road.update();
                 // To Do Stop Condition
+                if (road.Endgame(frog)==true){
+                    System.out.println("Tu as perdu");
+                }
                 // To Do Win Condition To_Do
-                if(frog.getY()>1100){
+                if(frog.getY()+frog.getTranslateY()<70){
                     System.out.println("Tu as gagné");
                 }
             }
