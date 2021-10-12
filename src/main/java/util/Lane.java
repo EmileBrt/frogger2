@@ -144,7 +144,8 @@ public class Lane extends Rectangle {
     public boolean intersect(Rectangle frog) {
         boolean collision = false;
         for (int i = 0; i < this.objects.size(); i++) {
-            if (this.objects.get(i).intersects(frog.getX()+frog.getTranslateX(), frog.getY()+frog.getTranslateY(), frog.getWidth(), frog.getHeight()) == true) {
+            Rectangle rec = new Rectangle(this.objects.get(i).getX()+this.objects.get(i).getTranslateX(), this.objects.get(i).getY()+this.objects.get(i).getTranslateY(), this.objects.get(i).getWidth(), this.objects.get(i).getHeight());
+            if (rec.intersects(frog.getX()+frog.getTranslateX(), frog.getY()+frog.getTranslateY(), frog.getWidth(), frog.getHeight()) == true) {
                 collision = true;
             }
         }

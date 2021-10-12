@@ -53,9 +53,9 @@ public class Game extends Application {
                         Duration.seconds(2000/road.lanes.get(i).getSpeed()),
                         road.lanes.get(i).objects.get(j) );
                 transition.setByX(2000f);
+                transition.play();
             }
         }
-
         // Moving the frog
         EventHandler<KeyEvent> keyListener = new EventHandler<>() {
             @Override
