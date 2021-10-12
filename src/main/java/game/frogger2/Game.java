@@ -67,7 +67,6 @@ public class Game extends Application {
                         frog.setRotate(270);
                         transition.setByX(-50);
                         transition.play();
-                        System.out.println("Translatex:"+frog.getTranslateX()+"Translatey:"+frog.getTranslateY());
                         System.out.println("X:"+(frog.getX()+frog.getTranslateX())+"Y:"+(frog.getY()+frog.getTranslateY()));
                         break;
                     case D:
@@ -76,7 +75,6 @@ public class Game extends Application {
                         transition.setByX(+50);
                         transition.play();
                         frog.localToParentTransformProperty();
-                        System.out.println("Translatex:"+frog.getTranslateX()+"Translatey:"+frog.getTranslateY());
                         System.out.println("X:"+(frog.getX()+frog.getTranslateX())+"Y:"+(frog.getY()+frog.getTranslateY()));
                         break;
                     case S :
@@ -84,7 +82,6 @@ public class Game extends Application {
                         frog.setRotate(180);
                         transition.setByY(+50);
                         transition.play();
-                        System.out.println("Translatex:"+frog.getTranslateX()+"Translatey:"+frog.getTranslateY());
                         System.out.println("X:"+(frog.getX()+frog.getTranslateX())+"Y:"+(frog.getY()+frog.getTranslateY()));
                         break;
                     case Z:
@@ -92,7 +89,6 @@ public class Game extends Application {
                         frog.setRotate(0);
                         transition.setByY(-50);
                         transition.play();
-                        System.out.println("Translatex:"+frog.getTranslateX()+"Translatey:"+frog.getTranslateY());
                         System.out.println("X:"+(frog.getX()+frog.getTranslateX())+"Y:"+(frog.getY()+frog.getTranslateY()));
                         break;
                 }
