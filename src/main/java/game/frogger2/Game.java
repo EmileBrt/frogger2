@@ -11,6 +11,7 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.application.Platform;
 import util.Road;
 
 public class Game extends Application {
@@ -30,6 +31,16 @@ public class Game extends Application {
     Image road_img2 = new Image("file:src/main/java/image/road2.png");
     ImagePattern road_pattern2 = new ImagePattern(road_img2);
 
+    Thread thread = new Thread(() -> {
+        while(true){
+            if(road.Endgame(frog)==true){
+                System.out.println("PERDU GROSSE MERDE");
+                break;
+            }
+        }
+    });
+
+
     @Override
     public void start(Stage primaryStage) {
         //Creating a BroderPane
@@ -41,14 +52,14 @@ public class Game extends Application {
         // Fill frog with car frog
         frog.setFill(frog_pattern);
 
-        // Fill lanes with DARKGREEN
+        // Fill lanes with roat_pattern
         for(int i=0;i< road.nbLanes;i++){
             if(i%2==1){road.lanes.get(i).setFill(road_pattern1);};
             if(i%2==0){road.lanes.get(i).setFill(road_pattern2);};
             road.lanes.get(0).setFill(Color.DARKGREEN);
             road.lanes.get(11).setFill(Color.DARKGREEN);
             // Fill Objects in lanes with car_pattern
-            for(int j=0;j<road.lanes.get(i).objects.size();j++){road.lanes.get(i).objects.get(j).setFill(car_pattern);
+            for(int j=0;j<road.lanes.get(i).objects.size();j++){road.lanes.get(i).objects.get(j).setFill(Color.RED);
                 TranslateTransition transition = new TranslateTransition(
                         Duration.seconds(2000/road.lanes.get(i).getSpeed()),
                         road.lanes.get(i).objects.get(j) );
@@ -56,6 +67,8 @@ public class Game extends Application {
                 transition.play();
             }
         }
+
+
         // Moving the frog
         EventHandler<KeyEvent> keyListener = new EventHandler<>() {
             @Override
@@ -94,16 +107,17 @@ public class Game extends Application {
                 }
                 // update car
                 road.update();
-                // To Do Stop Condition
-                if (road.Endgame(frog)==true){
-                    System.out.println("Tu as perdu");
-                }
                 // To Do Win Condition To_Do
                 if(frog.getY()+frog.getTranslateY()<70){
                     System.out.println("Tu as gagné");
                 }
             }
         };
+
+        thread.start();
+
+
+
 
         // keypressed event
         scene.addEventHandler(KeyEvent.KEY_PRESSED,keyListener);

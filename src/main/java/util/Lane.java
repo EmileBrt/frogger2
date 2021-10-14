@@ -62,7 +62,7 @@ public class Lane extends Rectangle {
         if (lane_type != 0) {
             for (int j = 0; j < 12; j++) {
                 if (Math.random() < density) {
-                    objects.add(new Rectangle(100 * j, getY(), 100, 50));
+                    objects.add(new Rectangle(100 * j, getY()+2, 95, 45));
                 }
             }
             ;
