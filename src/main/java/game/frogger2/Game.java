@@ -31,13 +31,20 @@ public class Game extends Application {
     Image road_img2 = new Image("file:src/main/java/image/road2.png");
     ImagePattern road_pattern2 = new ImagePattern(road_img2);
 
-    Thread thread = new Thread(() -> {
+    Thread thread_win_lose = new Thread(() -> {
         while(true){
             if(road.Endgame(frog)==true){
                 System.out.println("PERDU GROSSE MERDE");
                 break;
             }
         }
+    });
+
+    Thread thread_update = new Thread(() -> {
+        while(true){
+            road.update();
+            }
+
     });
 
 
@@ -114,10 +121,8 @@ public class Game extends Application {
             }
         };
 
-        thread.start();
-
-
-
+        thread_win_lose.start();
+        thread_update.start();
 
         // keypressed event
         scene.addEventHandler(KeyEvent.KEY_PRESSED,keyListener);
