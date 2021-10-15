@@ -74,9 +74,9 @@ public class Road {
     public void update(){
         for(int i=0;i<lanes.size();i++){
             for(int j=0;j<lanes.get(i).objects.size();j++){
-                if(lanes.get(i).objects.get(j).getX()> 1400){
+                if((lanes.get(i).objects.get(j).getX()+lanes.get(i).objects.get(j).getTranslateX())> 1400){
                     lanes.get(i).objects.remove(j);
-                    lanes.get(i).objects.add(new Rectangle(0,j*50,100,50));
+                    lanes.get(i).objects.add(new Rectangle(100 * j, lanes.get(i).objects.get(j).getY()+2, 95, 45));
                 }
             }
         }

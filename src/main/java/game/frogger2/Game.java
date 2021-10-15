@@ -11,7 +11,6 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import javafx.application.Platform;
 import util.Road;
 
 public class Game extends Application {
@@ -31,26 +30,25 @@ public class Game extends Application {
     Image road_img2 = new Image("file:src/main/java/image/road2.png");
     ImagePattern road_pattern2 = new ImagePattern(road_img2);
 
-    Thread thread_win_lose = new Thread(() -> {
-        while(true){
-            if(road.Endgame(frog)==true){
-                System.out.println("PERDU GROSSE MERDE");
-                break;
+    public void visual_update(BorderPane root){
+        // move new cars et set them car pattern
+        for(int i=0;i< road.nbLanes;i++){
+            for(int j=0;j<road.lanes.get(i).objects.size();j++){
+                if (road.lanes.get(i).objects.get(j).getTranslateX() == 0){
+                    road.lanes.get(i).objects.get(j).setFill(Color.RED);
+                    TranslateTransition transition = new TranslateTransition(
+                            Duration.seconds(2000/road.lanes.get(i).getSpeed()),
+                            road.lanes.get(i).objects.get(j) );
+                    transition.setByX(2000f);
+                    transition.play();
+                    root.getChildren().add(road.lanes.get(i).objects.get(j));
+                }
             }
         }
-    });
-
-    Thread thread_update = new Thread(() -> {
-        while(true){
-            road.update();
-            }
-
-    });
-
+    }
 
     @Override
     public void start(Stage primaryStage) {
-        //Creating a BroderPane
         BorderPane root = new BorderPane();
         //Creating a scene object
         Scene scene = new Scene(root, 1200, 600);
@@ -74,7 +72,6 @@ public class Game extends Application {
                 transition.play();
             }
         }
-
 
         // Moving the frog
         EventHandler<KeyEvent> keyListener = new EventHandler<>() {
@@ -112,22 +109,51 @@ public class Game extends Application {
                         System.out.println("X:"+(frog.getX()+frog.getTranslateX())+"Y:"+(frog.getY()+frog.getTranslateY()));
                         break;
                 }
-                // update car
-                road.update();
-                // To Do Win Condition To_Do
-                if(frog.getY()+frog.getTranslateY()<70){
-                    System.out.println("Tu as gagné");
-                }
             }
         };
 
-        thread_win_lose.start();
-        thread_update.start();
+        // Win or Lose Event
+        Thread thread_win_lose = new Thread(() -> {
+            while(true){
+                if(road.Endgame(frog)){
+                    System.out.println("PERDU GROSSE MERDE");
+                    break;
+                }
+                if(frog.getY()+frog.getTranslateY()<50){
+                    System.out.println("TU GAGNE MAIS TU RESTE UNE GROSSE MERDE");
+                    break;
+                }
+                try
+                {
+                    Thread.sleep(100);
+                }
+                catch(InterruptedException ex)
+                {
+                    Thread.currentThread().interrupt();
+                }
+            }
+        });
+
+        // Car Respawn
+        Thread thread_update = new Thread(() -> {
+            while(true){
+                road.update();
+                visual_update(root);
+                try
+                {
+                    Thread.sleep(100);
+                }
+                catch(InterruptedException ex)
+                {
+                    Thread.currentThread().interrupt();
+                }
+            }
+        });
 
         // keypressed event
         scene.addEventHandler(KeyEvent.KEY_PRESSED,keyListener);
 
-        // Add lanes (To_do: and object of lanes to root)
+        // add lanes and cars to root
         for(int i=0;i< road.lanes.size();i++){
             root.getChildren().add(road.lanes.get(i));
             for(int j=0;j<road.lanes.get(i).objects.size();j++){root.getChildren().add(road.lanes.get(i).objects.get(j));}
@@ -136,6 +162,9 @@ public class Game extends Application {
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.show();
+
+        thread_win_lose.start();
+        thread_update.start();
     }
     public static void main(String[] args) {
         launch(args);
