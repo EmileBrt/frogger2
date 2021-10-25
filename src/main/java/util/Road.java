@@ -64,6 +64,7 @@ public class Road {
         boolean end_collision = false;
         for(int i=0 ; i< this.lanes.size() - 1 ; i++){
             if (this.lanes.get(i).intersect(frog) == true){
+                System.out.println("Collision");
                 end_collision = true;
             }
         }
@@ -71,14 +72,20 @@ public class Road {
     }
 
     // On retire les voitures qui sont en dehors de l'écran et on en ajouter une nouvelle suivant le densité
-    public void update(){
-        for(int i=0;i<lanes.size();i++){
-            for(int j=0;j<lanes.get(i).objects.size();j++){
-                if((lanes.get(i).objects.get(j).getX()+lanes.get(i).objects.get(j).getTranslateX())> 1400){
-                    lanes.get(i).objects.remove(j);
-                    lanes.get(i).objects.add(new Rectangle(100 * j, lanes.get(i).objects.get(j).getY()+2, 95, 45));
-                }
+    public boolean update_need(){
+        boolean oufofmap = false;
+        for(int i=0;i<this.lanes.size();i++){
+            if(this.lanes.get(i).out()){
+                oufofmap = true;
             }
         }
+        return  oufofmap;
     }
+
+    public void update(){
+        for(int i=0;i<this.lanes.size();i++){
+            this.lanes.get(i).update();
+        }
+    }
+
 }

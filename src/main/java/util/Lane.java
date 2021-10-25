@@ -2,7 +2,6 @@ package util;
 
 import javafx.scene.shape.Rectangle;
 import java.util.ArrayList;
-import java.util.Objects;
 
 /**
  * Cette classe correspond aux voies de la route.
@@ -150,6 +149,25 @@ public class Lane extends Rectangle {
             }
         }
         return collision;
+    }
+
+    public boolean out(){
+        boolean oufofmap = false;
+        for(int i=0; i< this.objects.size();i++){
+            if((this.objects.get(i).getX()+this.objects.get(i).getTranslateX())> 1200){
+                oufofmap = true;
+            }
+        }
+        return oufofmap;
+    }
+
+    public void update(){
+        for(int i=0; i< this.objects.size();i++){
+            if((this.objects.get(i).getX()+this.objects.get(i).getTranslateX())> 1200){
+                this.objects.remove(i);
+                this.objects.add(new Rectangle(0, getY()+2, 95, 45));
+            }
+        }
     }
 }
 

@@ -15,7 +15,7 @@ import util.Road;
 
 public class Game extends Application {
 
-    static Road road = new Road();
+    public Road road = new Road();
 
     static Rectangle frog = new Rectangle(550, 555, 40.0d, 40.0d);
     Image frog_img = new Image("file:src/main/java/image/frogg.png");
@@ -29,23 +29,6 @@ public class Game extends Application {
 
     Image road_img2 = new Image("file:src/main/java/image/road2.png");
     ImagePattern road_pattern2 = new ImagePattern(road_img2);
-
-    public void visual_update(BorderPane root){
-        // move new cars et set them car pattern
-        for(int i=0;i< road.nbLanes;i++){
-            for(int j=0;j<road.lanes.get(i).objects.size();j++){
-                if (road.lanes.get(i).objects.get(j).getTranslateX() == 0){
-                    road.lanes.get(i).objects.get(j).setFill(Color.RED);
-                    TranslateTransition transition = new TranslateTransition(
-                            Duration.seconds(2000/road.lanes.get(i).getSpeed()),
-                            road.lanes.get(i).objects.get(j) );
-                    transition.setByX(2000f);
-                    transition.play();
-                    root.getChildren().add(road.lanes.get(i).objects.get(j));
-                }
-            }
-        }
-    }
 
     @Override
     public void start(Stage primaryStage) {
@@ -64,11 +47,11 @@ public class Game extends Application {
             road.lanes.get(0).setFill(Color.DARKGREEN);
             road.lanes.get(11).setFill(Color.DARKGREEN);
             // Fill Objects in lanes with car_pattern
-            for(int j=0;j<road.lanes.get(i).objects.size();j++){road.lanes.get(i).objects.get(j).setFill(Color.RED);
+            for(int j=0;j<road.lanes.get(i).objects.size();j++){road.lanes.get(i).objects.get(j).setFill(car_pattern);
                 TranslateTransition transition = new TranslateTransition(
-                        Duration.seconds(2000/road.lanes.get(i).getSpeed()),
+                        Duration.seconds(4000/road.lanes.get(i).getSpeed()),
                         road.lanes.get(i).objects.get(j) );
-                transition.setByX(2000f);
+                transition.setByX(4000f);
                 transition.play();
             }
         }
@@ -116,11 +99,11 @@ public class Game extends Application {
         Thread thread_win_lose = new Thread(() -> {
             while(true){
                 if(road.Endgame(frog)){
-                    System.out.println("PERDU GROSSE MERDE");
+                    System.out.println("PERDU");
                     break;
                 }
                 if(frog.getY()+frog.getTranslateY()<50){
-                    System.out.println("TU GAGNE MAIS TU RESTE UNE GROSSE MERDE");
+                    System.out.println("GAGNE");
                     break;
                 }
                 try
@@ -134,11 +117,12 @@ public class Game extends Application {
             }
         });
 
-        // Car Respawn
         Thread thread_update = new Thread(() -> {
             while(true){
-                road.update();
-                visual_update(root);
+                if(road.update_need()) {
+                    System.out.println("besoin d'une update");
+                    road.update();
+                }
                 try
                 {
                     Thread.sleep(100);
@@ -153,6 +137,9 @@ public class Game extends Application {
         // keypressed event
         scene.addEventHandler(KeyEvent.KEY_PRESSED,keyListener);
 
+        thread_win_lose.start();
+        thread_update.start();
+
         // add lanes and cars to root
         for(int i=0;i< road.lanes.size();i++){
             root.getChildren().add(road.lanes.get(i));
@@ -162,9 +149,6 @@ public class Game extends Application {
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.show();
-
-        thread_win_lose.start();
-        thread_update.start();
     }
     public static void main(String[] args) {
         launch(args);
