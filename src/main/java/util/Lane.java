@@ -1,7 +1,10 @@
 package util;
 
+import javafx.animation.TranslateTransition;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
+
 import java.util.ArrayList;
 
 /**
@@ -19,6 +22,7 @@ public class Lane extends GameElement {
     private int length;
     public ArrayList<Rectangle> cars = new ArrayList<>();
     public int lane_type; // type de voie (0: safe, 1: voie)
+    private String car_image = "file:src/main/java/image/redcar2.gif";
 
 
     /**
@@ -59,9 +63,17 @@ public class Lane extends GameElement {
         if (lane_type != 0) {
             for (int j = 0; j < 12; j++) {
                 if (Math.random() < density) {
-                    cars.add(new Rectangle(100 * j, getY()+2, 95, 45));
+                    cars.add(new Car(car_image, 100 * j, getY()+2, 95, 45));
                 }
             }
+        }
+    }
+
+    public void startCars(){
+        for (int i=0; i < cars.size(); i++){
+            TranslateTransition transition = new TranslateTransition(Duration.seconds(4000/speed), cars.get(i));
+            transition.setByX(4000f);
+            transition.play();
         }
     }
 

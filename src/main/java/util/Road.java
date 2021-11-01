@@ -22,10 +22,14 @@ public class Road {
     private String road_img2 = "file:src/main/java/image/road2.png";
 
     public Road() {
-
         laneSetup();
-        graphicalSetup();
+    }
+
+    public void startCars(){
+        for(int i=0; i < nbLanes; i++){
+            lanes.get(i).startCars();
         }
+    }
 
     /**
      * Adds lanes to the road.
@@ -65,37 +69,18 @@ public class Road {
             if (type != 0){
                 type = 1;
             }
-            float density = random.nextFloat();
+            float density = random.nextFloat() / 2;
             // instanciation
             Lane lane = new Lane(image, x, y, width, height, speed, density, direction, length, type);
             lanes.add(lane);
         }
 
         //Last lane is safe
-        Lane lastLane = new Lane(Color.DARKGREEN,0,0*50,1200,49,1,0.25,Direction.left,600,0);
+        Lane lastLane = new Lane(Color.DARKGREEN,0,(nbLanes-1)*50,1200,49,1,0.25,Direction.left,600,0);
         lanes.add(lastLane);
     }
 
-    public void graphicalSetup(){
-        Image road_img1 = new Image("file:src/main/java/image/road1.png");
-        ImagePattern road_pattern1 = new ImagePattern(road_img1);
 
-        Image road_img2 = new Image("file:src/main/java/image/road2.png");
-        ImagePattern road_pattern2 = new ImagePattern(road_img2);
-
-        for (int i=0; i < this.nbLanes; i++){
-            if (lanes.get(i).lane_type == 1){
-                // if the lane is safe
-                lanes.get(i).setFill(Color.DARKGREEN);
-            }else{
-                if(i % 2 == 0){
-                    lanes.get(i).setFill(road_pattern2);
-                }else{
-                    lanes.get(i).setFill(road_pattern1);
-                }
-            }
-        }
-    }
 
     public int getNbLanes() {
         return nbLanes;
