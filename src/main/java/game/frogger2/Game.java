@@ -11,11 +11,15 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import util.ControlKeys;
 import util.Road;
+import game.frogger2.Controls;
 
 public class Game extends Application {
 
     public Road road = new Road();
+
+    public Controls control = new Controls(ControlKeys.ZQSD);
 
     static Rectangle frog = new Rectangle(550, 555, 40.0d, 40.0d);
     Image frog_img = new Image("file:src/main/java/image/frogg.png");
@@ -59,39 +63,9 @@ public class Game extends Application {
         // Moving the frog
         EventHandler<KeyEvent> keyListener = new EventHandler<>() {
             @Override
+
             public void handle(KeyEvent e) {
-                TranslateTransition transition = new TranslateTransition(Duration.seconds(0.10),frog);
-                switch (e.getCode()){
-                    case Q :
-                        System.out.println("LEFT");
-                        frog.setRotate(270);
-                        transition.setByX(-50);
-                        transition.play();
-                        System.out.println("X:"+(frog.getX()+frog.getTranslateX())+"Y:"+(frog.getY()+frog.getTranslateY()));
-                        break;
-                    case D:
-                        System.out.println("RIGHT");
-                        frog.setRotate(90);
-                        transition.setByX(+50);
-                        transition.play();
-                        frog.localToParentTransformProperty();
-                        System.out.println("X:"+(frog.getX()+frog.getTranslateX())+"Y:"+(frog.getY()+frog.getTranslateY()));
-                        break;
-                    case S :
-                        System.out.println("DOWN");
-                        frog.setRotate(180);
-                        transition.setByY(+50);
-                        transition.play();
-                        System.out.println("X:"+(frog.getX()+frog.getTranslateX())+"Y:"+(frog.getY()+frog.getTranslateY()));
-                        break;
-                    case Z:
-                        System.out.println("UP");
-                        frog.setRotate(0);
-                        transition.setByY(-50);
-                        transition.play();
-                        System.out.println("X:"+(frog.getX()+frog.getTranslateX())+"Y:"+(frog.getY()+frog.getTranslateY()));
-                        break;
-                }
+                control.moveFrog(e, frog);
             }
         };
 
