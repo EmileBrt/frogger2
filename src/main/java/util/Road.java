@@ -1,6 +1,8 @@
 package util;
 
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import java.util.ArrayList;
 
@@ -14,8 +16,22 @@ public class Road {
     public int nbLanes = 12;
     public int length;
     public ArrayList<Lane> lanes = new ArrayList<Lane>();
+    private String image;
 
-    public Road() {
+    /**
+     * Constructor
+     * @param image Path to image file
+     */
+    public Road(String image) {
+        this.image = image;
+        laneSetup();
+        graphicalSetup();
+        }
+
+    /**
+     * Adds lanes to the road.
+     */
+    public void laneSetup(){
         // Set Lane
         lanes.add(new Lane(0,0*50,1200,49,1,0.25,Direction.left,600,0));
         lanes.add(new Lane(0,1*50,1200,49,150,0.25,Direction.left,600,1));
@@ -29,7 +45,29 @@ public class Road {
         lanes.add(new Lane(0,9*50,1200,49,150,0.25,Direction.left,600,1));
         lanes.add(new Lane(0,10*50,1200,49,100,0.25,Direction.left,600,1));
         lanes.add(new Lane(0,11*50,1200,49,1,0.25,Direction.left,600,0));
+    }
+
+    public void graphicalSetup(){
+        Image road_img1 = new Image("file:src/main/java/image/road1.png");
+        ImagePattern road_pattern1 = new ImagePattern(road_img1);
+
+        Image road_img2 = new Image("file:src/main/java/image/road2.png");
+        ImagePattern road_pattern2 = new ImagePattern(road_img2);
+
+        for (int i=0; i < this.nbLanes; i++){
+            if (lanes.get(i).lane_type == 1){
+                // if the lane is safe
+                lanes.get(i).setFill(Color.DARKGREEN);
+            }else{
+                if(i % 2 == 0){
+                    lanes.get(i).setFill(road_pattern2);
+                }else{
+                    lanes.get(i).setFill(road_pattern1);
+                }
+            }
         }
+    }
+
     public int getNbLanes() {
         return nbLanes;
     }
@@ -59,7 +97,6 @@ public class Road {
      * @throws boolean true si collision sinon false
      * @since 1.0
      */
-
     public boolean Endgame(Rectangle frog){
         boolean end_collision = false;
         for(int i=0 ; i< this.lanes.size() - 1 ; i++){

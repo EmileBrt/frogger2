@@ -18,7 +18,7 @@ import game.frogger2.Controls;
 
 public class Main extends Application {
 
-    public Road road = new Road();
+    public Road road = new Road("file:src/main/java/image/road1.png");
 
     public Controls control = new Controls(ControlKeys.ZQSD);
 

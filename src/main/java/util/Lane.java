@@ -18,29 +18,6 @@ public class Lane extends Rectangle {
     public int lane_type; // type de voie (0: safe, 1: voie)
 
 
-    public int getLength() {
-        return length;
-    }
-
-    public void setLength(int length) {
-        this.length = length;
-    }
-
-    public ArrayList<Rectangle> getObjects() {
-        return objects;
-    }
-
-    public void setObjects(ArrayList<Rectangle> objects) {
-        this.objects = objects;
-    }
-
-    public int getLane_type() {
-        return lane_type;
-    }
-
-    public void setLane_type(int lane_type) {
-        this.lane_type = lane_type;
-    }
 
     /**
      * Constructeur de la classe Lane.
@@ -67,6 +44,30 @@ public class Lane extends Rectangle {
             ;
         }
     }
+    public int getLength() {
+        return length;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
+    }
+
+    public ArrayList<Rectangle> getObjects() {
+        return objects;
+    }
+
+    public void setObjects(ArrayList<Rectangle> objects) {
+        this.objects = objects;
+    }
+
+    public int getLane_type() {
+        return lane_type;
+    }
+
+    public void setLane_type(int lane_type) {
+        this.lane_type = lane_type;
+    }
+
     /**
      * Retourne la vitesse de circulation sur cette voie.
      *
