@@ -1,6 +1,7 @@
 package util;
 
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
@@ -9,6 +10,7 @@ import javafx.scene.shape.Rectangle;
  */
 public class GameElement extends Rectangle {
     private String image;
+    private Color color;
 
     /**
      * Constructor
@@ -22,6 +24,12 @@ public class GameElement extends Rectangle {
         super(v, v1, v2, v3);
         this.image = image;
         graphicSetup();
+    }
+
+    public GameElement(double v, double v1, double v2, double v3, Color color) {
+        super(v, v1, v2, v3);
+        this.color = color;
+        this.setFill(color);
     }
 
     /**

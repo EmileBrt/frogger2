@@ -1,5 +1,6 @@
 package util;
 
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import java.util.ArrayList;
 
@@ -9,7 +10,8 @@ import java.util.ArrayList;
  * @author Corentin GOETGHEBEUR
  * @version 1.0
  */
-public class Lane extends Rectangle {
+public class Lane extends GameElement {
+    private Color color;
     private String image;
     private int speed;
     private double density; // number between 0 and 1
@@ -19,24 +21,35 @@ public class Lane extends Rectangle {
     public int lane_type; // type de voie (0: safe, 1: voie)
 
 
-
     /**
-     * Constructeur de la classe Lane.
-     *
-     * @param speed     Vitesse de circulation des voitures sur cette voie.
-     * @param density   Probabilite d'apparition d'une voiture sur cette voie.
+     * Constructeur
+     * @param image path to image file
+     * @param x coordonnée x
+     * @param y coordonnée y
+     * @param width size x
+     * @param height size y
+     * @param speed Vitesse de circulation des voitures sur cette voie.
+     * @param density Probabilite d'apparition d'une voiture sur cette voie.
      * @param direction Sens de circulation sur cette voie (Direction.left ou Direction.right).
-     * @param length    longueur de la voie.
-     * @since 1.0
+     * @param length longueur de la voie.
+     * @param lane_type
      */
-    public Lane(double x, double y, double weight, double height, int speed, double density, Direction direction, int length,int lane_type) {
-        super(x, y, weight, height);
+    public Lane(String image, double x, double y, double width, double height, int speed, double density, Direction direction, int length,int lane_type) {
+        super(x, y, width, height, image);
         this.speed = speed;
         this.density = density;
         this.setDirection(direction);
         this.length = length;
         this.lane_type = lane_type;
         carsSetup();
+    }
+
+    public Lane(Color color, double v, double v1, double v2, double v3, int speed, double density, Direction direction, int length, int lane_type) {
+        super(v, v1, v2, v3, color);
+        this.speed = speed;
+        this.density = density;
+        this.direction = direction;
+        this.length = length;
     }
 
     /**

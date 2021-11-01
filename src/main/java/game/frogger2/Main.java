@@ -16,7 +16,7 @@ import util.Road;
 
 public class Main extends Application {
 
-    public Road road = new Road("file:src/main/java/image/road1.png");
+    public Road road = new Road();
 
     public Controls control = new Controls(ControlKeys.ZQSD);
 

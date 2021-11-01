@@ -7,7 +7,7 @@ import javafx.scene.shape.Rectangle;
 /**
  * This class represents the cars that must be avoided by the player.
  */
-public class Car extends Rectangle {
+public class Car extends GameElement {
     private String image;
 
     /**
@@ -19,17 +19,8 @@ public class Car extends Rectangle {
      * @param sizeY size along the Y axis
      */
     public Car(String image, double x, double y, double sizeX, double sizeY) {
-        super(x, y, sizeX, sizeY);
+        super(x, y, sizeX, sizeY, image);
         this.image = image;
-        graphicSetup();
     }
 
-    /**
-     * Sets up the image for the car.
-     */
-    private void graphicSetup(){
-        Image car_image = new Image(this.image);
-        ImagePattern car_pattern = new ImagePattern(car_image);
-        this.setFill(car_pattern);
-    }
 }
