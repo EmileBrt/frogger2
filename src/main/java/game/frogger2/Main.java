@@ -8,13 +8,11 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import util.ControlKeys;
 import util.Frog;
 import util.Road;
-import game.frogger2.Controls;
 
 public class Main extends Application {
 
@@ -48,10 +46,10 @@ public class Main extends Application {
             road.lanes.get(0).setFill(Color.DARKGREEN);
             road.lanes.get(11).setFill(Color.DARKGREEN);
             // Fill Objects in lanes with car_pattern
-            for(int j=0;j<road.lanes.get(i).objects.size();j++){road.lanes.get(i).objects.get(j).setFill(car_pattern);
+            for(int j = 0; j<road.lanes.get(i).cars.size(); j++){road.lanes.get(i).cars.get(j).setFill(car_pattern);
                 TranslateTransition transition = new TranslateTransition(
                         Duration.seconds(4000/road.lanes.get(i).getSpeed()),
-                        road.lanes.get(i).objects.get(j) );
+                        road.lanes.get(i).cars.get(j) );
                 transition.setByX(4000f);
                 transition.play();
             }
@@ -114,7 +112,7 @@ public class Main extends Application {
         // add lanes and cars to root
         for(int i=0;i< road.lanes.size();i++){
             root.getChildren().add(road.lanes.get(i));
-            for(int j=0;j<road.lanes.get(i).objects.size();j++){root.getChildren().add(road.lanes.get(i).objects.get(j));}
+            for(int j = 0; j<road.lanes.get(i).cars.size(); j++){root.getChildren().add(road.lanes.get(i).cars.get(j));}
         }
         root.getChildren().add(frog);
         primaryStage.setScene(scene);
