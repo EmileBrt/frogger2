@@ -1,156 +1,57 @@
 package game.frogger2;
-import javafx.animation.TranslateTransition;
-import javafx.application.Application;
-import javafx.event.EventHandler;
+
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Rectangle;
-import javafx.stage.Stage;
-import javafx.util.Duration;
+import util.ControlKeys;
+import util.Frog;
 import util.Road;
 
-public class Game extends Application {
+/**
+ * This class represents the game.
+ */
+public class Game {
+    public boolean running;
+    public int level;
+    public Road road;
+    public Controls controls;
+    public Frog frog;
 
-    public Road road = new Road();
+    Scene gameScene;
 
-    static Rectangle frog = new Rectangle(550, 555, 40.0d, 40.0d);
-    Image frog_img = new Image("file:src/main/java/image/frogg.png");
-    ImagePattern frog_pattern = new ImagePattern(frog_img);
+    /**
+     * Constructor
+     */
+    public Game() {
+        setupGame();
+        setupScene();
+    }
 
-    Image car_img = new Image("file:src/main/java/image/redcar2.gif");
-    ImagePattern car_pattern = new ImagePattern(car_img);
+    /**
+     * Sets up game elements ( creates objects ...)
+     */
+    private void setupGame(){
+        road = new Road();
+        controls = new Controls(ControlKeys.ZQSD);
+        frog = new Frog("file:src/main/java/image/frogg.png", 550, 555, 40.0d, 40.0d);
 
-    Image road_img1 = new Image("file:src/main/java/image/road1.png");
-    ImagePattern road_pattern1 = new ImagePattern(road_img1);
+        road.startCars();
+    }
 
-    Image road_img2 = new Image("file:src/main/java/image/road2.png");
-    ImagePattern road_pattern2 = new ImagePattern(road_img2);
-
-    @Override
-    public void start(Stage primaryStage) {
+    /**
+     * Sets up the scene.
+     */
+    private void setupScene(){
         BorderPane root = new BorderPane();
         //Creating a scene object
-        Scene scene = new Scene(root, 1200, 600);
-        scene.setFill(Color.BLACK);
-
-        // Fill frog with car frog
-        frog.setFill(frog_pattern);
-
-        // Fill lanes with roat_pattern
-        for(int i=0;i< road.nbLanes;i++){
-            if(i%2==1){road.lanes.get(i).setFill(road_pattern1);};
-            if(i%2==0){road.lanes.get(i).setFill(road_pattern2);};
-            road.lanes.get(0).setFill(Color.DARKGREEN);
-            road.lanes.get(11).setFill(Color.DARKGREEN);
-            // Fill Objects in lanes with car_pattern
-            for(int j=0;j<road.lanes.get(i).objects.size();j++){road.lanes.get(i).objects.get(j).setFill(car_pattern);
-                TranslateTransition transition = new TranslateTransition(
-                        Duration.seconds(4000/road.lanes.get(i).getSpeed()),
-                        road.lanes.get(i).objects.get(j) );
-                transition.setByX(4000f);
-                transition.play();
-            }
-        }
-
-        // Moving the frog
-        EventHandler<KeyEvent> keyListener = new EventHandler<>() {
-            @Override
-            public void handle(KeyEvent e) {
-                TranslateTransition transition = new TranslateTransition(Duration.seconds(0.10),frog);
-                switch (e.getCode()){
-                    case Q :
-                        System.out.println("LEFT");
-                        frog.setRotate(270);
-                        transition.setByX(-50);
-                        transition.play();
-                        System.out.println("X:"+(frog.getX()+frog.getTranslateX())+"Y:"+(frog.getY()+frog.getTranslateY()));
-                        break;
-                    case D:
-                        System.out.println("RIGHT");
-                        frog.setRotate(90);
-                        transition.setByX(+50);
-                        transition.play();
-                        frog.localToParentTransformProperty();
-                        System.out.println("X:"+(frog.getX()+frog.getTranslateX())+"Y:"+(frog.getY()+frog.getTranslateY()));
-                        break;
-                    case S :
-                        System.out.println("DOWN");
-                        frog.setRotate(180);
-                        transition.setByY(+50);
-                        transition.play();
-                        System.out.println("X:"+(frog.getX()+frog.getTranslateX())+"Y:"+(frog.getY()+frog.getTranslateY()));
-                        break;
-                    case Z:
-                        System.out.println("UP");
-                        frog.setRotate(0);
-                        transition.setByY(-50);
-                        transition.play();
-                        System.out.println("X:"+(frog.getX()+frog.getTranslateX())+"Y:"+(frog.getY()+frog.getTranslateY()));
-                        break;
-                }
-            }
-        };
-
-        // Win or Lose Event
-        Thread thread_win_lose = new Thread(() -> {
-            while(true){
-                if(road.Endgame(frog)){
-                    System.out.println("PERDU");
-                    break;
-                }
-                if(frog.getY()+frog.getTranslateY()<50){
-                    System.out.println("GAGNE");
-                    break;
-                }
-                try
-                {
-                    Thread.sleep(100);
-                }
-                catch(InterruptedException ex)
-                {
-                    Thread.currentThread().interrupt();
-                }
-            }
-        });
-
-        Thread thread_update = new Thread(() -> {
-            while(true){
-                if(road.update_need()) {
-                    System.out.println("besoin d'une update");
-                    road.update();
-                }
-                try
-                {
-                    Thread.sleep(100);
-                }
-                catch(InterruptedException ex)
-                {
-                    Thread.currentThread().interrupt();
-                }
-            }
-        });
-
-        // keypressed event
-        scene.addEventHandler(KeyEvent.KEY_PRESSED,keyListener);
-
-        thread_win_lose.start();
-        thread_update.start();
+        gameScene = new Scene(root, 1200, 600);
+        gameScene.setFill(Color.BLACK);
 
         // add lanes and cars to root
         for(int i=0;i< road.lanes.size();i++){
             root.getChildren().add(road.lanes.get(i));
-            for(int j=0;j<road.lanes.get(i).objects.size();j++){root.getChildren().add(road.lanes.get(i).objects.get(j));}
+            for(int j = 0; j<road.lanes.get(i).cars.size(); j++){root.getChildren().add(road.lanes.get(i).cars.get(j));}
         }
         root.getChildren().add(frog);
-        primaryStage.setScene(scene);
-        primaryStage.setResizable(false);
-        primaryStage.show();
-    }
-    public static void main(String[] args) {
-        launch(args);
     }
 }

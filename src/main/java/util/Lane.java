@@ -1,6 +1,10 @@
 package util;
 
+import javafx.animation.TranslateTransition;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
+
 import java.util.ArrayList;
 
 /**
@@ -9,14 +13,69 @@ import java.util.ArrayList;
  * @author Corentin GOETGHEBEUR
  * @version 1.0
  */
-public class Lane extends Rectangle {
+public class Lane extends GameElement {
+    private Color color;
+    private String image;
     private int speed;
     private double density; // number between 0 and 1
     private Direction direction;
     private int length;
-    public ArrayList<Rectangle> objects = new ArrayList<Rectangle>();
+    public ArrayList<Rectangle> cars = new ArrayList<>();
     public int lane_type; // type de voie (0: safe, 1: voie)
+    private String car_image = "file:src/main/java/image/redcar2.gif";
 
+
+    /**
+     * Constructeur
+     * @param image path to image file
+     * @param x coordonnée x
+     * @param y coordonnée y
+     * @param width size x
+     * @param height size y
+     * @param speed Vitesse de circulation des voitures sur cette voie.
+     * @param density Probabilite d'apparition d'une voiture sur cette voie.
+     * @param direction Sens de circulation sur cette voie (Direction.left ou Direction.right).
+     * @param length longueur de la voie.
+     * @param lane_type
+     */
+    public Lane(String image, double x, double y, double width, double height, int speed, double density, Direction direction, int length,int lane_type) {
+        super(x, y, width, height, image);
+        this.speed = speed;
+        this.density = density;
+        this.setDirection(direction);
+        this.length = length;
+        this.lane_type = lane_type;
+        carsSetup();
+    }
+
+    public Lane(Color color, double v, double v1, double v2, double v3, int speed, double density, Direction direction, int length, int lane_type) {
+        super(v, v1, v2, v3, color);
+        this.speed = speed;
+        this.density = density;
+        this.direction = direction;
+        this.length = length;
+    }
+
+    /**
+     * Sets up the cars in the lane.
+     */
+    public void carsSetup(){
+        if (lane_type != 0) {
+            for (int j = 0; j < 12; j++) {
+                if (Math.random() < density) {
+                    cars.add(new Car(car_image, 100 * j, getY()+2, 95, 45));
+                }
+            }
+        }
+    }
+
+    public void startCars(){
+        for (int i=0; i < cars.size(); i++){
+            TranslateTransition transition = new TranslateTransition(Duration.seconds(4000/speed), cars.get(i));
+            transition.setByX(4000f);
+            transition.play();
+        }
+    }
 
     public int getLength() {
         return length;
@@ -26,12 +85,12 @@ public class Lane extends Rectangle {
         this.length = length;
     }
 
-    public ArrayList<Rectangle> getObjects() {
-        return objects;
+    public ArrayList<Rectangle> getCars() {
+        return cars;
     }
 
-    public void setObjects(ArrayList<Rectangle> objects) {
-        this.objects = objects;
+    public void setCars(ArrayList<Rectangle> cars) {
+        this.cars = cars;
     }
 
     public int getLane_type() {
@@ -42,31 +101,6 @@ public class Lane extends Rectangle {
         this.lane_type = lane_type;
     }
 
-    /**
-     * Constructeur de la classe Lane.
-     *
-     * @param speed     Vitesse de circulation des voitures sur cette voie.
-     * @param density   Probabilite d'apparition d'une voiture sur cette voie.
-     * @param direction Sens de circulation sur cette voie (Direction.left ou Direction.right).
-     * @param length    longueur de la voie.
-     * @since 1.0
-     */
-    public Lane(double x, double y, double weight, double height, int speed, double density, Direction direction, int length,int lane_type) {
-        super(x, y, weight, height);
-        this.speed = speed;
-        this.density = density;
-        this.setDirection(direction);
-        this.length = length;
-        this.lane_type = lane_type;
-        if (lane_type != 0) {
-            for (int j = 0; j < 12; j++) {
-                if (Math.random() < density) {
-                    objects.add(new Rectangle(100 * j, getY()+2, 95, 45));
-                }
-            }
-            ;
-        }
-    }
     /**
      * Retourne la vitesse de circulation sur cette voie.
      *
@@ -142,8 +176,8 @@ public class Lane extends Rectangle {
 
     public boolean intersect(Rectangle frog) {
         boolean collision = false;
-        for (int i = 0; i < this.objects.size(); i++) {
-            Rectangle rec = new Rectangle(this.objects.get(i).getX()+this.objects.get(i).getTranslateX(), this.objects.get(i).getY()+this.objects.get(i).getTranslateY(), this.objects.get(i).getWidth(), this.objects.get(i).getHeight());
+        for (int i = 0; i < this.cars.size(); i++) {
+            Rectangle rec = new Rectangle(this.cars.get(i).getX()+this.cars.get(i).getTranslateX(), this.cars.get(i).getY()+this.cars.get(i).getTranslateY(), this.cars.get(i).getWidth(), this.cars.get(i).getHeight());
             if (rec.intersects(frog.getX()+frog.getTranslateX(), frog.getY()+frog.getTranslateY(), frog.getWidth(), frog.getHeight()) == true) {
                 collision = true;
             }
@@ -153,8 +187,8 @@ public class Lane extends Rectangle {
 
     public boolean out(){
         boolean oufofmap = false;
-        for(int i=0; i< this.objects.size();i++){
-            if((this.objects.get(i).getX()+this.objects.get(i).getTranslateX())> 1200){
+        for(int i = 0; i< this.cars.size(); i++){
+            if((this.cars.get(i).getX()+this.cars.get(i).getTranslateX())> 1200){
                 oufofmap = true;
             }
         }
@@ -162,10 +196,10 @@ public class Lane extends Rectangle {
     }
 
     public void update(){
-        for(int i=0; i< this.objects.size();i++){
-            if((this.objects.get(i).getX()+this.objects.get(i).getTranslateX())> 1200){
-                this.objects.remove(i);
-                this.objects.add(new Rectangle(0, getY()+2, 95, 45));
+        for(int i = 0; i< this.cars.size(); i++){
+            if((this.cars.get(i).getX()+this.cars.get(i).getTranslateX())> 1200){
+                this.cars.remove(i);
+                this.cars.add(new Rectangle(0, getY()+2, 95, 45));
             }
         }
     }
