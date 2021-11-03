@@ -18,6 +18,7 @@ public class Menu {
     public Scene menu_scene, game_scene;
     public Stage window;
     public Application app;
+    public Game game;
 
     private VBox menu_vbox;
     private Label title_label;
@@ -81,8 +82,9 @@ public class Menu {
     /**
      * Sets up the actions for the buttons.
      */
-    public void buttonActionSetup(Stage window, Scene scene, Application exec){
-        this.game_scene = scene;
+    public void buttonActionSetup(Stage window, Game game, Application exec){
+        this.game = game;
+        this.game_scene = this.game.gameScene;
         this.window = window;
         this.app = exec;
 
@@ -103,6 +105,7 @@ public class Menu {
      */
     public void onPlayButtonClick(){
         window.setScene(game_scene);
+        game.road.startCars();
     }
 
     /**
@@ -121,5 +124,19 @@ public class Menu {
         description_label.setText("After pressing play, you can move the frog using ZQSD on your keyboard. " +
                 "(This version is made for AZERTY keyboards).\n" +
                 "Try not to get hit by the cars !");
+    }
+
+    /**
+     * Méthode modifiant le label de description pour afficher le message de partie terminée. (version perdue)
+     */
+    public void display_lost(){
+        description_label.setText("You lost, try again!");
+    }
+
+    /**
+     * Méthode modifiant le label de description pour afficher le message de fin de partie (version gagnée)
+     */
+    public void display_win(){
+        description_label.setText("You win, congratulations!");
     }
 }

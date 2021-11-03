@@ -1,5 +1,8 @@
 package util;
 
+import game.frogger2.Game;
+import javafx.event.Event;
+import javafx.event.EventType;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
@@ -14,6 +17,9 @@ import java.util.Random;
  * @version 1.0
  */
 public class Road {
+
+    public Event winEvent, loseEvent;
+    public Game game;
     public int nbLanes = 12;
     public int length;
     public ArrayList<Lane> lanes = new ArrayList<Lane>();
@@ -21,8 +27,14 @@ public class Road {
     private String road_img1 = "file:src/main/java/image/road1.png";
     private String road_img2 = "file:src/main/java/image/road2.png";
 
-    public Road() {
+    public Road(Event winEvent, Event loseEvent) {
+        this.winEvent = winEvent;
+        this.loseEvent = loseEvent;
         laneSetup();
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
     }
 
     public void startCars(){
@@ -116,8 +128,12 @@ public class Road {
         for(int i=0 ; i< this.lanes.size() - 1 ; i++){
             if (this.lanes.get(i).intersect(frog) == true){
                 System.out.println("Collision");
+
                 end_collision = true;
             }
+        }
+        if(end_collision){
+            Event.fireEvent(game.gameScene, loseEvent);
         }
         return end_collision;
     }
