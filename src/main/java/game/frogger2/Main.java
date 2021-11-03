@@ -56,13 +56,10 @@ public class Main extends Application {
 
         Thread thread_update = new Thread(() -> {
             while(true){
-                if(game.road.update_need()) {
-                    System.out.println("besoin d'une update");
-                    game.road.update();
-                }
+                game.road.update();
                 try
                 {
-                    Thread.sleep(100);
+                    Thread.sleep(10);
                 }
                 catch(InterruptedException ex)
                 {

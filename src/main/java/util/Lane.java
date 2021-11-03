@@ -71,8 +71,8 @@ public class Lane extends GameElement {
 
     public void startCars(){
         for (int i=0; i < cars.size(); i++){
-            TranslateTransition transition = new TranslateTransition(Duration.seconds(4000/speed), cars.get(i));
-            transition.setByX(4000f);
+            TranslateTransition transition = new TranslateTransition(Duration.seconds((1250-cars.get(i).getX())/speed), cars.get(i));
+            transition.setByX((1250-cars.get(i).getX()));
             transition.play();
         }
     }
@@ -185,21 +185,14 @@ public class Lane extends GameElement {
         return collision;
     }
 
-    public boolean out(){
-        boolean oufofmap = false;
-        for(int i = 0; i< this.cars.size(); i++){
-            if((this.cars.get(i).getX()+this.cars.get(i).getTranslateX())> 1200){
-                oufofmap = true;
-            }
-        }
-        return oufofmap;
-    }
-
     public void update(){
         for(int i = 0; i< this.cars.size(); i++){
             if((this.cars.get(i).getX()+this.cars.get(i).getTranslateX())> 1200){
-                this.cars.remove(i);
-                this.cars.add(new Rectangle(0, getY()+2, 95, 45));
+                this.cars.get(i).setTranslateX(0);
+                this.cars.get(i).setX(0);
+                TranslateTransition transition = new TranslateTransition(Duration.seconds((1250/speed)), cars.get(i));
+                transition.setByX((1250));
+                transition.play();
             }
         }
     }

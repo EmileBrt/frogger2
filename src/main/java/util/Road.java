@@ -55,7 +55,7 @@ public class Road {
             int length = 600;
 
             Random random = new Random();
-            int speed = random.nextInt(200) + 100; // valeur aléatoire entre 100 et 300
+            int speed = random.nextInt(1) + 50; // valeur aléatoire entre 100 et 300
 
             int dir = random.nextInt(2); // 0 ou 1
             Direction direction;
@@ -122,21 +122,9 @@ public class Road {
         return end_collision;
     }
 
-    // On retire les voitures qui sont en dehors de l'écran et on en ajouter une nouvelle suivant le densité
-    public boolean update_need(){
-        boolean oufofmap = false;
-        for(int i=0;i<this.lanes.size();i++){
-            if(this.lanes.get(i).out()){
-                oufofmap = true;
-            }
-        }
-        return  oufofmap;
-    }
-
     public void update(){
         for(int i=0;i<this.lanes.size();i++){
             this.lanes.get(i).update();
         }
     }
-
 }
