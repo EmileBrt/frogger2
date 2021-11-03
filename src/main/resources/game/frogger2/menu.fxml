@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
@@ -11,7 +12,7 @@
             <Font name="Impact" size="70.0" />
          </font>
       </Label>
-      <Label fx:id="descritpion_label" text="Press play to start ! ">
+      <Label fx:id="descritpion_label" text="Press play to start ! " wrapText="true">
          <font>
             <Font size="16.0" />
          </font></Label>
@@ -23,4 +24,7 @@
          </children>
       </HBox>
    </children>
+   <padding>
+      <Insets top="20.0" />
+   </padding>
 </VBox>
