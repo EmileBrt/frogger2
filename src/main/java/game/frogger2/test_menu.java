@@ -22,7 +22,7 @@ public class test_menu extends Application {
         this.menu_scene = menu.menu_scene;
         this.menu.game_scene = game_scene;
 
-        this.menu.buttonActionSetup(window, game_scene);
+        this.menu.buttonActionSetup(window, game_scene, this);
 
         window.setScene(menu_scene);
         window.setResizable(false);

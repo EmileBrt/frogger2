@@ -1,5 +1,6 @@
 package game.frogger2;
 
+import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -15,6 +16,8 @@ import java.io.IOException;
 public class Menu {
     public Scene menu_scene, game_scene;
     public Stage window;
+    public Application app;
+
     private VBox menu_vbox;
     private Label title_label;
     private Label descritption_label;
@@ -69,13 +72,35 @@ public class Menu {
     /**
      * Sets up the actions for the buttons.
      */
-    public void buttonActionSetup(Stage window, Scene scene){
+    public void buttonActionSetup(Stage window, Scene scene, Application exec){
         this.game_scene = scene;
         this.window = window;
+        this.app = exec;
+
         play_button.setOnAction(actionEvent -> onPlayButtonClick());
+        quit_button.setOnAction(actionEvent -> {
+            try {
+                onQuitButtonClick();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
+
+    /**
+     * Méthode appelée en cas d'appui sur le bouton Play
+     */
     public void onPlayButtonClick(){
         window.setScene(game_scene);
+    }
+
+    /**
+     * Méthode appelée en cas d'appui sur le bouton quit.
+     * @throws Exception
+     */
+    public void onQuitButtonClick() throws Exception {
+        window.close();
+        app.stop();
     }
 }
