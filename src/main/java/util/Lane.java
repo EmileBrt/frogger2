@@ -25,6 +25,7 @@ public class Lane extends GameElement {
     private String car_image = "file:src/main/java/image/redcar2.gif";
 
 
+
     /**
      * Constructeur
      * @param image path to image file
@@ -189,9 +190,9 @@ public class Lane extends GameElement {
         for(int i = 0; i< this.cars.size(); i++){
             if((this.cars.get(i).getX()+this.cars.get(i).getTranslateX())> 1200){
                 this.cars.get(i).setTranslateX(0);
-                this.cars.get(i).setX(0);
-                TranslateTransition transition = new TranslateTransition(Duration.seconds((1250/speed)), cars.get(i));
-                transition.setByX((1250));
+                this.cars.get(i).setX(-100);
+                TranslateTransition transition = new TranslateTransition(Duration.seconds((1350/speed)), cars.get(i));
+                transition.setByX((1350));
                 transition.play();
             }
         }
