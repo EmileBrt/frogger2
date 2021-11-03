@@ -7,12 +7,14 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 
 
 public class Menu {
-    public Scene scene;
+    public Scene menu_scene, game_scene;
+    public Stage window;
     private VBox menu_vbox;
     private Label title_label;
     private Label descritption_label;
@@ -20,7 +22,8 @@ public class Menu {
     private Button play_button, help_button, quit_button;
 
 
-    public Menu() {
+    public Menu() throws IOException {
+        SceneSetup();
 
     }
 
@@ -43,6 +46,8 @@ public class Menu {
         descritption_label.setFont(description_font);
 
         button_box = new HBox();
+        button_box.setAlignment(Pos.CENTER);
+        button_box.setSpacing(50);
 
         play_button = new Button();
         play_button.setText("PLAY");
@@ -57,10 +62,20 @@ public class Menu {
         button_box.getChildren().addAll(quit_button, help_button, play_button);
         menu_vbox.getChildren().addAll(title_label, descritption_label, button_box);
 
-        scene = new Scene(menu_vbox);
-
-
+        menu_scene = new Scene(menu_vbox);
 
     }
 
+    /**
+     * Sets up the actions for the buttons.
+     */
+    public void buttonActionSetup(Stage window, Scene scene){
+        this.game_scene = scene;
+        this.window = window;
+        play_button.setOnAction(actionEvent -> onPlayButtonClick());
+    }
+
+    public void onPlayButtonClick(){
+        window.setScene(game_scene);
+    }
 }
