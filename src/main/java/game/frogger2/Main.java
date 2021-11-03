@@ -16,8 +16,6 @@ import util.Road;
 
 public class Main extends Application {
 
-
-
     public Game game = new Game();
 
     @Override
