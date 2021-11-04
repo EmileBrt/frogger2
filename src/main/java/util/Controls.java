@@ -1,4 +1,4 @@
-package game.frogger2;
+package util;
 import javafx.animation.TranslateTransition;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.shape.Rectangle;

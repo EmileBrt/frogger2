@@ -12,4 +12,6 @@ module com.example.frogger2 {
 
     opens game.frogger2 to javafx.fxml;
     exports game.frogger2;
+    exports util;
+    opens util to javafx.fxml;
 }
