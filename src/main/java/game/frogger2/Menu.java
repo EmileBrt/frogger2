@@ -2,12 +2,14 @@ package game.frogger2;
 
 import javafx.application.Application;
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -102,8 +104,7 @@ public class Menu {
     /**
      * Sets up the actions for the buttons.
      */
-    public void buttonActionSetup(Stage window, Game game, Application exec){
-        this.game = game;
+    public void buttonActionSetup(Stage window, Application exec){
         this.window = window;
         this.app = exec;
 
@@ -123,12 +124,36 @@ public class Menu {
      */
     private void setupGame(){
         this.game = new Game(winEvent, loseEvent, resetEvent);
+
+        // Moving the frog
+        EventHandler<KeyEvent> keyListener = e -> game.controls.moveFrog(e, game.frog);
+
+        EventHandler<Event> WinListener = event -> {
+            if (WinEventType.equals(event.getEventType()))
+                display_win();
+            window.setScene(menu_scene);
+        };
+
+        EventHandler<Event> LoseListener = event -> {
+            if (LoseEventType.equals(event.getEventType())){
+                display_lost();
+                window.setScene(menu_scene);
+            }
+        };
+
+        // keypressed event
+        game.gameScene.addEventHandler(KeyEvent.KEY_PRESSED,keyListener);
+        //Endgame event
+        game.gameScene.addEventHandler(WinEventType, WinListener);
+        game.gameScene.addEventHandler(LoseEventType, LoseListener);
+
     }
 
     /**
      * Méthode appelée en cas d'appui sur le bouton Play
      */
     public void onPlayButtonClick(){
+        setupGame();
         window.setScene(game.gameScene);
         game.start();
     }
