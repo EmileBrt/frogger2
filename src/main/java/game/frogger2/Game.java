@@ -75,6 +75,7 @@ public class Game {
         // add lanes and cars to root
         for(int i=0;i< road.lanes.size();i++){
             root.getChildren().add(road.lanes.get(i));
+            for(int j = 0; j<road.lanes.get(i).traps.size(); j++){root.getChildren().add(road.lanes.get(i).traps.get(j));}
             for(int j = 0; j<road.lanes.get(i).cars.size(); j++){root.getChildren().add(road.lanes.get(i).cars.get(j));}
         }
         root.getChildren().add(frog);

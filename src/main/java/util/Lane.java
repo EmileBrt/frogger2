@@ -18,16 +18,18 @@ public class Lane extends GameElement {
     private int speed;
     private double density; // number between 0 and 1
     private double density_double = 0.2; // number between 0 and 1
+    private double density_traps = 0.2;
     private Direction direction;
     private int length;
     public ArrayList<Rectangle> cars = new ArrayList<>();
+    public ArrayList<Rectangle> traps = new ArrayList<>();
     public ArrayList<TranslateTransition> cars_transition = new ArrayList<>();
     public int lane_type; // type de voie (0: safe, 1: voie)
     private String car_image_l = "file:src/main/java/image/redcar_l.gif";
     private String car_image_r = "file:src/main/java/image/redcar_r.gif";
     private String bus_image_l = "file:src/main/java/image/car_static/bus_l.png";
     private String bus_image_r = "file:src/main/java/image/car_static/bus_r.png";
-    private String trap = "file:src/main/java/image/Fire_Trap.png";
+    private String trap_image = "file:src/main/java/image/Fire_Trap.png";
 
     /**
      * Constructeur
@@ -66,6 +68,9 @@ public class Lane extends GameElement {
     public void carsSetup(){
         if (lane_type != 0) {
             for (int j = 0; j < 12; j++) {
+                if (Math.random() < density_traps) {
+                    traps.add(new Car(trap_image, 100 * j, getY()+2, 45, 45));
+                }
                 if (Math.random() < density) {
                     if(direction==Direction.left){
                         if(Math.random()<density_double){
@@ -208,6 +213,12 @@ public class Lane extends GameElement {
         boolean collision = false;
         for (int i = 0; i < this.cars.size(); i++) {
             Rectangle rec = new Rectangle(this.cars.get(i).getX()+this.cars.get(i).getTranslateX(), this.cars.get(i).getY()+this.cars.get(i).getTranslateY(), this.cars.get(i).getWidth(), this.cars.get(i).getHeight());
+            if (rec.intersects(frog.getX()+frog.getTranslateX(), frog.getY()+frog.getTranslateY(), frog.getWidth(), frog.getHeight()) == true) {
+                collision = true;
+            }
+        }
+        for (int i = 0; i < this.traps.size(); i++) {
+            Rectangle rec = new Rectangle(this.traps.get(i).getX(), this.traps.get(i).getY(), this.traps.get(i).getWidth(), this.traps.get(i).getHeight());
             if (rec.intersects(frog.getX()+frog.getTranslateX(), frog.getY()+frog.getTranslateY(), frog.getWidth(), frog.getHeight()) == true) {
                 collision = true;
             }
