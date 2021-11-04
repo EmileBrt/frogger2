@@ -1,6 +1,8 @@
 package game.frogger2;
 
 import javafx.application.Application;
+import javafx.event.Event;
+import javafx.event.EventType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -15,7 +17,7 @@ import java.io.IOException;
 
 
 public class Menu {
-    public Scene menu_scene, game_scene;
+    public Scene menu_scene;
     public Stage window;
     public Application app;
     public Game game;
@@ -26,10 +28,28 @@ public class Menu {
     private HBox button_box;
     private Button play_button, help_button, quit_button;
 
+    public EventType WinEventType, LoseEventType, resetEventType;
+    public Event winEvent, loseEvent, resetEvent;
+
 
     public Menu() throws IOException {
         SceneSetup();
+        EventSetup();
+    }
 
+    /**
+     * Sets up the events.
+     */
+    private void EventSetup(){
+        //Creation des event winlose
+        this.WinEventType = new EventType("WinEvent");
+        this.LoseEventType = new EventType("LoseEvent");
+        this.winEvent = new Event(WinEventType);
+        this.loseEvent = new Event(LoseEventType);
+
+        //Creation des event de reset
+        this.resetEventType = new EventType("resetEvent");
+        this.resetEvent = new Event(resetEventType);
     }
 
     private void SceneSetup() throws IOException {
@@ -84,7 +104,6 @@ public class Menu {
      */
     public void buttonActionSetup(Stage window, Game game, Application exec){
         this.game = game;
-        this.game_scene = this.game.gameScene;
         this.window = window;
         this.app = exec;
 
@@ -99,13 +118,19 @@ public class Menu {
         });
     }
 
+    /**
+     * Sets up the game
+     */
+    private void setupGame(){
+        this.game = new Game(winEvent, loseEvent, resetEvent);
+    }
 
     /**
      * Méthode appelée en cas d'appui sur le bouton Play
      */
     public void onPlayButtonClick(){
-        window.setScene(game_scene);
-        game.road.startCars();
+        window.setScene(game.gameScene);
+        game.start();
     }
 
     /**

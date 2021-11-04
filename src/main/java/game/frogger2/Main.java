@@ -1,5 +1,8 @@
 package game.frogger2;
+import javafx.animation.Animation;
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
@@ -15,13 +18,11 @@ public class Main extends Application {
 
     public Menu menu = new Menu();
     public Stage window;
-    public Scene game_scene, menu_scene;
 
-    public Thread thread_update, thread_win_lose;
-
-    public EventType EndEventType;
-    public Event winEvent, loseEvent;
+    public EventType WinEventType, LoseEventType, resetEventType;
+    public Event winEvent, loseEvent, resetEvent;
     public Game game;
+
     public Main() throws IOException {
 
     }
@@ -30,92 +31,57 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
 
         //Creation des event winlose
-        this.EndEventType = new EventType("WinEvent");
-        this.winEvent = new Event(EndEventType);
-        this.loseEvent = new Event(EndEventType);
+        this.WinEventType = new EventType("WinEvent");
+        this.LoseEventType = new EventType("LoseEvent");
+        this.winEvent = new Event(WinEventType);
+        this.loseEvent = new Event(LoseEventType);
+
+        //Creation des event de reset
+        this.resetEventType = new EventType("resetEvent");
+        this.resetEvent = new Event(resetEventType);
+
 
         // attribution d'une valeur à game
-        this.game = new Game(winEvent, loseEvent);
+        this.game = new Game(winEvent, loseEvent, resetEvent);
 
 
         // attribution des valeurs
-        this.game_scene = game.gameScene;
+
         this.window = primaryStage;
-        this.menu_scene = menu.menu_scene;
-        this.menu.game_scene = game_scene;
+        this.menu.game.gameScene = game.gameScene;
 
         //
         this.menu.buttonActionSetup(window, game, this);
 
-
         // Moving the frog
         EventHandler<KeyEvent> keyListener = e -> game.controls.moveFrog(e, game.frog);
 
-        EventHandler<Event> WinLoseListener = new EventHandler<Event>() {
+        EventHandler<Event> WinListener = event -> {
+            if (WinEventType.equals(event.getEventType()))
+                menu.display_win();
+                window.setScene(menu.menu_scene);
+            };
 
-
-            @Override
-            public void handle(Event event) {
-                System.out.println("Event !!");
-                if (EndEventType.equals(event.getEventType())) {
-
-                    window.setScene(game_scene);
-
-                }
+        EventHandler<Event> LoseListener = event -> {
+            if (LoseEventType.equals(event.getEventType())){
+                menu.display_lost();
+                window.setScene(menu.menu_scene);
             }
         };
 
-        // Win or Lose Event
-        this.thread_win_lose = new Thread(() -> {
-            while(true){
-                if(game.road.Endgame(game.frog)){
-                    System.out.println("PERDU");
-                    this.winEvent = new Event(EndEventType);
-                    Event.fireEvent(game.gameScene, winEvent);
-                    break;
-                }
-                if(game.frog.getY() + game.frog.getTranslateY() < 50){
-                    System.out.println("GAGNE");
-                    window.setScene(menu_scene);
-                    menu.display_win();
-                    break;
-                }
-                try
-                {
-                    Thread.sleep(100);
-                }
-                catch(InterruptedException ex)
-                {
-                    Thread.currentThread().interrupt();
-                }
-            }
-        });
+        EventHandler<Event> ResetListener = event -> {
+            game = new Game(winEvent, loseEvent, resetEvent);
+            this.menu.game.gameScene = game.gameScene;
+        };
 
-        this.thread_update = new Thread(() -> {
-            while(true){
-                game.road.update();
-                try
-                {
-                    Thread.sleep(10);
-                }
-                catch(InterruptedException ex)
-                {
-                    Thread.currentThread().interrupt();
-                }
-            }
-        });
-
-
-
-        game.gameScene.addEventHandler(EndEventType, WinLoseListener);
         // keypressed event
         game.gameScene.addEventHandler(KeyEvent.KEY_PRESSED,keyListener);
+        //Endgame event
+        game.gameScene.addEventHandler(WinEventType, WinListener);
+        game.gameScene.addEventHandler(LoseEventType, LoseListener);
+        game.gameScene.addEventHandler(resetEventType, ResetListener);
 
-        thread_win_lose.start();
-        thread_update.start();
-
-
-        window.setScene(menu_scene);
+        window.setScene(menu.menu_scene);
         window.setResizable(false);
         window.show();
     }
