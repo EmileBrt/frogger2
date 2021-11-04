@@ -5,6 +5,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Cette classe correspond aux voies de la route.
@@ -23,10 +24,25 @@ public class Lane extends GameElement {
     private int length;
     public ArrayList<Rectangle> cars = new ArrayList<>();
     public ArrayList<Rectangle> traps = new ArrayList<>();
+    public ArrayList<String> car_images_r = new ArrayList<>();
+    public ArrayList<String> car_images_l = new ArrayList<>();
     public ArrayList<TranslateTransition> cars_transition = new ArrayList<>();
     public int lane_type; // type de voie (0: safe, 1: voie)
+
+    public Random random = new Random();
     private String car_image_l = "file:src/main/java/image/redcar_l.gif";
+    private String car_image1_l = "file:src/main/java/image/car_static/car01_l.png";
+    private String car_image2_l = "file:src/main/java/image/car_static/car02_l.png";
+    private String car_image3_l = "file:src/main/java/image/car_static/car03_l.png";
+    private String car_image4_l = "file:src/main/java/image/car_static/car04_l.png";
+
+
     private String car_image_r = "file:src/main/java/image/redcar_r.gif";
+    private String car_image1_r = "file:src/main/java/image/car_static/car01_r.png";
+    private String car_image2_r = "file:src/main/java/image/car_static/car02_r.png";
+    private String car_image3_r = "file:src/main/java/image/car_static/car03_r.png";
+    private String car_image4_r = "file:src/main/java/image/car_static/car04_r.png";
+
     private String bus_image_l = "file:src/main/java/image/car_static/bus_l.png";
     private String bus_image_r = "file:src/main/java/image/car_static/bus_r.png";
     private String trap_image = "file:src/main/java/image/Fire_Trap.png";
@@ -66,6 +82,18 @@ public class Lane extends GameElement {
      * Sets up the cars in the lane.
      */
     public void carsSetup(){
+        car_images_r.add(car_image_r);
+        car_images_r.add(car_image1_r);
+        car_images_r.add(car_image2_r);
+        car_images_r.add(car_image3_r);
+        car_images_r.add(car_image4_r);
+
+        car_images_l.add(car_image_l);
+        car_images_l.add(car_image1_l);
+        car_images_l.add(car_image2_l);
+        car_images_l.add(car_image3_l);
+        car_images_l.add(car_image4_l);
+
         if (lane_type != 0) {
             for (int j = 0; j < 12; j++) {
                 if (Math.random() < density_traps) {
@@ -78,7 +106,7 @@ public class Lane extends GameElement {
                             j += 1;
                         }
                         else {
-                            cars.add(new Car(car_image_l, 100 * j, getY()+2, 95, 45));
+                            cars.add(new Car(car_images_l.get(random.nextInt(car_images_l.size())), 100 * j, getY()+2, 95, 45));
                         }
                     }
                     if(direction==Direction.right){
@@ -87,7 +115,7 @@ public class Lane extends GameElement {
                             j += 1;
                         }
                         else {
-                            cars.add(new Car(car_image_r, 100 * j, getY()+2, 95, 45));
+                            cars.add(new Car(car_images_r.get(random.nextInt(car_images_r.size())), 100 * j, getY()+2, 95, 45));
                         }
                     }
                 }
