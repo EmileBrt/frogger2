@@ -67,7 +67,7 @@ public class Road {
             int length = 600;
 
             Random random = new Random();
-            int speed = random.nextInt(1) + 50; // valeur aléatoire entre 100 et 300
+            int speed = random.nextInt(100) + 100; // valeur aléatoire entre 100 et 300
 
             int dir = random.nextInt(2); // 0 ou 1
             Direction direction;

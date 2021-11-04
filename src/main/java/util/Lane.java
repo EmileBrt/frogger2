@@ -4,7 +4,6 @@ import javafx.animation.TranslateTransition;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
-
 import java.util.ArrayList;
 
 /**
@@ -18,13 +17,17 @@ public class Lane extends GameElement {
     private String image;
     private int speed;
     private double density; // number between 0 and 1
+    private double density_double = 0.2; // number between 0 and 1
     private Direction direction;
     private int length;
     public ArrayList<Rectangle> cars = new ArrayList<>();
+    public ArrayList<TranslateTransition> cars_transition = new ArrayList<>();
     public int lane_type; // type de voie (0: safe, 1: voie)
-    private String car_image = "file:src/main/java/image/redcar2.gif";
-
-
+    private String car_image_l = "file:src/main/java/image/redcar_l.gif";
+    private String car_image_r = "file:src/main/java/image/redcar_r.gif";
+    private String bus_image_l = "file:src/main/java/image/car_static/bus_l.png";
+    private String bus_image_r = "file:src/main/java/image/car_static/bus_r.png";
+    private String trap = "file:src/main/java/image/Fire_Trap.png";
 
     /**
      * Constructeur
@@ -64,17 +67,43 @@ public class Lane extends GameElement {
         if (lane_type != 0) {
             for (int j = 0; j < 12; j++) {
                 if (Math.random() < density) {
-                    cars.add(new Car(car_image, 100 * j, getY()+2, 95, 45));
+                    if(direction==Direction.left){
+                        if(Math.random()<density_double){
+                            cars.add(new Car(bus_image_l, 100 * j, getY()+2, 140, 45));
+                            j += 1;
+                        }
+                        else {
+                            cars.add(new Car(car_image_l, 100 * j, getY()+2, 95, 45));
+                        }
+                    }
+                    if(direction==Direction.right){
+                        if(Math.random()<density_double){
+                            cars.add(new Car(bus_image_r, 100 * j, getY()+2, 140, 45));
+                            j += 1;
+                        }
+                        else {
+                            cars.add(new Car(car_image_r, 100 * j, getY()+2, 95, 45));
+                        }
+                    }
                 }
             }
         }
     }
 
     public void startCars(){
-        for (int i=0; i < cars.size(); i++){
-            TranslateTransition transition = new TranslateTransition(Duration.seconds((1250-cars.get(i).getX())/speed), cars.get(i));
-            transition.setByX((1250-cars.get(i).getX()));
-            transition.play();
+        switch (direction){
+            case left:
+                for (int i=0; i < cars.size(); i++){
+                    cars_transition.add(new TranslateTransition(Duration.seconds(Math.abs(-100-cars.get(i).getX())/speed), cars.get(i)));
+                    cars_transition.get(i).setByX(-100-cars.get(i).getX());
+                    cars_transition.get(i).play();
+                }
+            case right:
+                for (int i=0; i < cars.size(); i++){
+                    cars_transition.add( new TranslateTransition(Duration.seconds(Math.abs(1300-cars.get(i).getX())/speed), cars.get(i)));
+                    cars_transition.get(i).setByX(1300-cars.get(i).getX());
+                    cars_transition.get(i).play();
+                }
         }
     }
 
@@ -186,15 +215,30 @@ public class Lane extends GameElement {
         return collision;
     }
 
-    public void update(){
-        for(int i = 0; i< this.cars.size(); i++){
-            if((this.cars.get(i).getX()+this.cars.get(i).getTranslateX())> 1200){
-                this.cars.get(i).setTranslateX(0);
-                this.cars.get(i).setX(-100);
-                TranslateTransition transition = new TranslateTransition(Duration.seconds((1350/speed)), cars.get(i));
-                transition.setByX((1350));
-                transition.play();
-            }
+    public void update() {
+        switch (this.direction) {
+            case right:
+                for (int i = 0; i < this.cars.size(); i++) {
+                    if ((this.cars.get(i).getX() + this.cars.get(i).getTranslateX()) > 1200) {
+                        this.cars.get(i).setTranslateX(0);
+                        this.cars.get(i).setX(0);
+                        cars_transition.get(i).stop();
+                        cars_transition.get(i).setDuration(Duration.seconds(1550/this.speed));
+                        cars_transition.get(i).setByX(1550);
+                        cars_transition.get(i).play();
+                    }
+                }
+            case left:
+                for (int i = 0; i < this.cars.size(); i++) {
+                        if ((this.cars.get(i).getX() + this.cars.get(i).getTranslateX()) < -40) {
+                            this.cars.get(i).setTranslateX(0);
+                            this.cars.get(i).setX(1400);
+                            cars_transition.get(i).stop();
+                            cars_transition.get(i).setDuration(Duration.seconds(1550/this.speed));
+                            cars_transition.get(i).setByX(-1550);
+                            cars_transition.get(i).play();
+                        }
+                }
         }
     }
 }
