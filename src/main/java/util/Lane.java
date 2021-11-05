@@ -131,12 +131,14 @@ public class Lane extends GameElement {
                     cars_transition.get(i).setByX(-100-cars.get(i).getX());
                     cars_transition.get(i).play();
                 }
+                break;
             case right:
                 for (int i=0; i < cars.size(); i++){
                     cars_transition.add( new TranslateTransition(Duration.seconds(Math.abs(1300-cars.get(i).getX())/speed), cars.get(i)));
                     cars_transition.get(i).setByX(1300-cars.get(i).getX());
                     cars_transition.get(i).play();
                 }
+                break;
         }
     }
 
@@ -266,6 +268,7 @@ public class Lane extends GameElement {
                         cars_transition.get(i).setByX(1550);
                         cars_transition.get(i).play();
                     }
+                    break;
                 }
             case left:
                 for (int i = 0; i < this.cars.size(); i++) {
@@ -278,6 +281,7 @@ public class Lane extends GameElement {
                             cars_transition.get(i).play();
                         }
                 }
+                break;
         }
     }
 }
